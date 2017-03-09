@@ -8,6 +8,8 @@
 %}
 
 %token <int> INT
+%token <string> IDENT
+%token BOOLTYPE INTTYPE STRINGTYPE SETTYPE
 %token PLUS MINUS TIMES DIV
 %token LPAREN RPAREN
 %token ASSIGN EQUALTO
@@ -28,15 +30,22 @@ main:
    expr EOL                { $1 }
 ;
 
-expr:
-   INT                     { $1 }
- | LPAREN expr RPAREN      { $2 }
- | expr PLUS expr          { $1 + $3 }
- | expr MINUS expr         { $1 - $3 }
- | expr TIMES expr         { $1 * $3 }
- | expr DIV expr           { $1 / $3 }
- | WHILE expr DO expr END  { while true do $4 done}
- | expr ASSIGN expr      { $1 = $3 }
- | MINUS expr %prec UMINUS { - $2 }
+ident:
+	IDENT					{ $1 }
 ;
 
+bool:
+	BOOLTYPE				
+;
+
+expr:
+   INT                     	{ $1 }
+ | LPAREN expr RPAREN      	{ $2 }
+ | expr PLUS expr          	{ $1 + $3 }
+ | expr MINUS expr         	{ $1 - $3 }
+ | expr TIMES expr         	{ $1 * $3 }
+ | expr DIV expr           	{ $1 / $3 }
+ | WHILE bool DO expr END  	{ while $2 do $4 done}
+ | ident ASSIGN expr      	{ let $1 = $3 }
+ | MINUS expr %prec UMINUS 	{ - $2 }
+;

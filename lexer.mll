@@ -6,10 +6,10 @@ rule main_lex = parse
       [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
     | ['\n' ]  { EOL }
     | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
-    | ['a'-'z','A'-'Z']+ as lxm { IDENT(lxm) }
+    | ['A'-'Z']+ as lxm { IDENT(lxm) }
     | "bool"       { BOOLTYPE }
-    | "Int"        { INTTYPE }
-    | "char"       { CHARTYPE }
+    | "int"        { INTTYPE }
+    | "string"     { STRINGTYPE }
     | "set"        { SETTYPE }
     | '+'          { PLUS }
     | '-'          { MINUS }
@@ -34,4 +34,4 @@ rule main_lex = parse
     | "end"        { END }
     | "if"         { IF }
     | "else"       { ELSE }
-    | eof          { Eof }
+    | eof          { EOL }
