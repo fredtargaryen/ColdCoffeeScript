@@ -8,7 +8,8 @@
 %}
 
 %token <int> INT
-%token <string> IDENT
+%token <string> STRING
+%token IDENT
 %token BOOLTYPE INTTYPE STRINGTYPE SETTYPE
 %token PLUS MINUS TIMES DIV
 %token LPAREN RPAREN
@@ -39,6 +40,10 @@ bool:
   | int EQUALTO int 		{ $1 == $3 }
 ;
 
+string:
+	STRING					{ $1 }
+;
+
 int:
    INT						{ $1 }
  | int PLUS int          	{ $1 + $3 }
@@ -49,6 +54,9 @@ int:
 ;
 
 expr:
-   LPAREN expr RPAREN      	{ $2 }
- | WHILE bool DO expr END  	{ while $2 do $4 done}
+   LPAREN expr RPAREN      			{ $2 }
+ | WHILE bool DO expr END  			{ while $2 do $4 done}
+ | BOOLTYPE IDENT ASSIGN bool		{ let $2 = $4 }
+ | STRINGTYPE IDENT ASSIGN string 	{ let $2 = $4 }
+ | INTTYPE IDENT ASSIGN int			{ let $2 = $4 }
 ;

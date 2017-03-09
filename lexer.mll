@@ -6,7 +6,8 @@ rule main_lex = parse
       [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
     | '\n'  { EOL }
     | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
-    | ['A'-'Z']+ as lxm { IDENT(lxm) }
+    | ['A'-'Z']+   { IDENT }
+	| '\"'['a'-'z']+'\"' { STRING }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
     | "string"     { STRINGTYPE }
@@ -35,3 +36,6 @@ rule main_lex = parse
     | "if"         { IF }
     | "else"       { ELSE }
     | eof          { EOF }
+	| '{'		   { SETSTART }
+	| '}'		   { SETEND }
+	| ','		   { STRINGSEP }
