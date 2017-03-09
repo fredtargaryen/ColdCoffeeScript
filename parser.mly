@@ -17,7 +17,7 @@
 %token TRUE FALSE
 %token UNION INTERSECT CONCAT DIFFERENCE MEMBEROF
 %token FOR WHILE DO END IF ELSE
-%token EOL
+%token EOF
 %left PLUS MINUS        /* lowest precedence */
 %left TIMES DIV         /* medium precedence */
 %left MODULO EXPO
@@ -27,7 +27,7 @@
 
 %%
 main:
-   expr EOL                { $1 }
+   expr EOF                 { $1 }
 ;
 
 ident:
