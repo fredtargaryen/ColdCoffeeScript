@@ -4,7 +4,7 @@ open Parser        (* The type token is defined in parser.mli *)
 }
 rule main_lex = parse
       [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
-    | ['\n' ]  { EOL }
+    | '\n'  { EOL }
     | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
     | ['A'-'Z']+ as lxm { IDENT(lxm) }
     | "bool"       { BOOLTYPE }
