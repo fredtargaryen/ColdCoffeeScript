@@ -8,7 +8,8 @@ type CoffeeTerm =
 	| TmInt of int 
 	| TmBool of bool 
 	| TmString of string 
-	| TmSet of set
+	| TmSet of SetType
+	| TmVar of string
 	| TmAssign of string * CoffeeTerm 
 	| TmLessThan of CoffeeTerm * CoffeeTerm
 	| TmGreaterThan of CoffeeTerm * CoffeeTerm
