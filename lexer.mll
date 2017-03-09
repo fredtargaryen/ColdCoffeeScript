@@ -3,7 +3,7 @@
 open Parser        (* The type token is defined in parser.mli *)
 exception Eof
 }
-rule token = parse
+rule main_lex = parse
       [' ' '\t']     { token lexbuf }     (* skip blanks *)
     | ['\n' ]  { EOL }
     | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
@@ -16,7 +16,7 @@ rule token = parse
     | '<'          { LESSTHAN }
     | '>'          { GREATERTHAN }
     | "true"       { TRUE }
-    | "false"      { FLASE }
+    | "false"      { FALSE }
     | "union"      { UNION }
     | "intersect"  { INTERSECT }
     | "concat"     { CONCAT }
