@@ -1,0 +1,5 @@
+-Finish Lexer
+-Finish Parser
+-Finish type checker
+-Finish evaluator
+-finish Makefile
