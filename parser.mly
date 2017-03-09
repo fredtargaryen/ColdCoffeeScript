@@ -24,29 +24,31 @@
 %left MODULO EXPO
 %nonassoc UMINUS        /* highest precedence */
 %start main             /* the entry point */
-%type <int> main
+%type <unit> main
 
 %%
 main:
    expr EOF                 { $1 }
 ;
 
-ident:
-	IDENT					{ $1 }
+bool:
+	TRUE					{ true }
+  | FALSE					{ false }
+  | int GREATERTHAN int		{ $1 > $3 }
+  | int LESSTHAN int		{ $1 < $3 }
+  | int EQUALTO int 		{ $1 == $3 }
 ;
 
-bool:
-	BOOLTYPE				{  }
+int:
+   INT						{ $1 }
+ | int PLUS int          	{ $1 + $3 }
+ | int MINUS int         	{ $1 - $3 }
+ | int TIMES int         	{ $1 * $3 }
+ | int DIV int           	{ $1 / $3 }
+ | MINUS int %prec UMINUS 	{ - $2 }
 ;
 
 expr:
-   INT                     	{ $1 }
- | LPAREN expr RPAREN      	{ $2 }
- | expr PLUS expr          	{ $1 + $3 }
- | expr MINUS expr         	{ $1 - $3 }
- | expr TIMES expr         	{ $1 * $3 }
- | expr DIV expr           	{ $1 / $3 }
+   LPAREN expr RPAREN      	{ $2 }
  | WHILE bool DO expr END  	{ while $2 do $4 done}
- | ident ASSIGN expr      	{ let $1 = $3 }
- | MINUS expr %prec UMINUS 	{ - $2 }
 ;
