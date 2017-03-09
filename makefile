@@ -4,5 +4,5 @@ all :
 	ocamlc -c parser.mli
 	ocamlc -c lexer.ml
 	ocamlc -c parser.ml
-	ocamlc -c calc.ml
-	ocamlc -o calct lexer.cmo parser.cmo calc.cmo
+	ocamlc -c coffee.ml
+	ocamlc -o coffeet lexer.cmo parser.cmo coffee.cmo

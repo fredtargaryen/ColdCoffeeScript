@@ -1,6 +1,6 @@
 (* File lexer.mll *)
 {
-open Parser        (* The type token is defined in parser.mli *)
+open Parser        (* The type main_lex is defined in parser.mli *)
 }
 rule main_lex = parse
       [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
