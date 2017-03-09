@@ -34,4 +34,4 @@ rule main_lex = parse
     | "end"        { END }
     | "if"         { IF }
     | "else"       { ELSE }
-    | eof          { EOL }
+    | eof          { EOF }
