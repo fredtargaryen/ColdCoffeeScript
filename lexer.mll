@@ -5,9 +5,9 @@ open Parser        (* The type main_lex is defined in parser.mli *)
 rule main_lex = parse
       [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
     | '\n'  { EOL }
-    | ['0'-'9']+ as lxm { INT(int_of_string lxm) }
-    | ['A'-'Z']+   { IDENT }
-	| '\"'['a'-'z']+'\"' { STRING }
+    | ['0'-'9']+ as lxm  { INT(int_of_string lxm) }
+    | ['A'-'Z']+ as lxm  { IDENT(lxm) }
+	| '\"'['a'-'z']+'\"' as lxm { STRING(lxm) }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
     | "string"     { STRINGTYPE }
