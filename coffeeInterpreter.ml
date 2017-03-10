@@ -3,7 +3,7 @@ exception LookupError;;
 (* Language Types *)
 type coffeeType = IntType | BoolType | StringType | SetType
 
-(* Language Grammer *)
+(* Language Grammar *)
 type coffeeTerm = 
 	  TmInt of int 
 	| TmBool of bool 

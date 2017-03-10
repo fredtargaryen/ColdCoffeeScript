@@ -1,6 +1,6 @@
 /* File parser.mly */
 %{
-	open coffeeInterpreter
+	open Coffeeinterpreter
 %}
 
 %token <int> INT
@@ -22,42 +22,36 @@
 %left MODULO EXPO
 %nonassoc UMINUS        /* highest precedence */
 %start main             /* the entry point */
-%type <unit> main
-
+%type <Coffeeinterpreter.coffeeTerm> main
+%type <Coffeeinterpreter.coffeeType> coffeetype
 %%
 main:
    expr EOF                 { $1 }
 ;
 
-bool:
-	TRUE					{ TmBool true }
-  | FALSE					{ TmBool false }    
-  | int GREATERTHAN int		{ TmBool ($1 > $3) }
-  | int LESSTHAN int		{ TmBool ($1 < $3) }
-  | int EQUALTO int 		{ TmBool ($1 == $3) }
-;
-
-string:
-	STRING					{ TmString $1 }
-;
-
-int:
-   INT						{ TmInt $1 }
- | int PLUS int          	{ TmInt ($1 + $3) }
- | int MINUS int         	{ TmInt ($1 - $3) }
- | int TIMES int         	{ TmInt ($1 * $3) }
- | int DIV int           	{ TmInt ($1 / $3) }
- | MINUS int %prec UMINUS 	{ TmInt (- $2) }
-;
-
-ident:
-	IDENT							{ TmVar $1 }
+coffeetype:
+    BOOLTYPE	{ BoolType }
+  | INTTYPE		{ IntType }
+  | STRINGTYPE	{ StringType }
 ;
 
 expr:
-   LPAREN expr RPAREN      			{ $2 }
- | WHILE bool DO expr END  			{ TmWhile ($2, $4) }
- | BOOLTYPE ident ASSIGN bool		{ TmAssign ($2, $4) }
- | STRINGTYPE ident ASSIGN string 	{ TmAssign ($2, $4) }
- | INTTYPE ident ASSIGN int			{ TmAssign ($2, $4) }
+    TRUE							{ TmBool true }
+  | FALSE							{ TmBool false }    
+  | expr GREATERTHAN expr			{ TmGreaterThan ($1, $3) }
+  | expr LESSTHAN expr				{ TmLessThan ($1, $3) }
+  | expr EQUALTO expr 				{ TmEqualTo ($1, $3) }
+  | STRING							{ TmString $1 }
+  | INT								{ TmInt $1 }
+  | expr PLUS expr         			{ TmPlus ($1, $3) }
+  | expr MINUS expr     	    	{ TmMinus ($1, $3) }
+  | expr TIMES expr         		{ TmMult ($1, $3) }
+  | expr DIV expr           		{ TmDiv ($1, $3) }
+ /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } */
+  |	IDENT							{ TmVar $1 }
+  | LPAREN expr RPAREN      		{ $2 }
+  | WHILE expr DO expr END  		{ TmWhile ($2, $4) }
+/*  | BOOLTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
+/*  | STRINGTYPE expr ASSIGN expr 	{ TmAssign ($2, $4) } */
+/*  | INTTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
 ;
