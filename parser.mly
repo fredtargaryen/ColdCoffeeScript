@@ -33,24 +33,25 @@ coffeetype:
     BOOLTYPE	{ BoolType }
   | INTTYPE		{ IntType }
   | STRINGTYPE	{ StringType }
+  | VOIDTYPE	{ VoidType }
 ;
 
 expr:
     TRUE							{ TmBool true }
-  | FALSE							{ TmBool false }    
+  | FALSE							{ TmBool false }
+  | expr EQUALTO expr 				{ TmEqualTo ($1, $3) }  
+  | INT								{ TmInt $1 }
   | expr GREATERTHAN expr			{ TmGreaterThan ($1, $3) }
   | expr LESSTHAN expr				{ TmLessThan ($1, $3) }
-  | expr EQUALTO expr 				{ TmEqualTo ($1, $3) }
-  | STRING							{ TmString $1 }
-  | INT								{ TmInt $1 }
   | expr PLUS expr         			{ TmPlus ($1, $3) }
   | expr MINUS expr     	    	{ TmMinus ($1, $3) }
   | expr TIMES expr         		{ TmMult ($1, $3) }
   | expr DIV expr           		{ TmDiv ($1, $3) }
- /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } */
+  | STRING							{ TmString $1 }
   |	IDENT							{ TmVar $1 }
   | LPAREN expr RPAREN      		{ $2 }
   | WHILE expr DO expr END  		{ TmWhile ($2, $4) }
+/* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 /*  | BOOLTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
 /*  | STRINGTYPE expr ASSIGN expr 	{ TmAssign ($2, $4) } */
 /*  | INTTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */

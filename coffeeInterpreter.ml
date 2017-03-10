@@ -1,7 +1,7 @@
 exception LookupError;;
 
 (* Language Types *)
-type coffeeType = IntType | BoolType | StringType | SetType
+type coffeeType = BoolType | IntType | StringType | SetType
 
 (* Language Grammar *)
 type coffeeTerm = 
@@ -26,6 +26,46 @@ type coffeeTerm =
 	| TmMemberOf of coffeeTerm * coffeeTerm
 	| TmConcat of coffeeTerm * coffeeTerm
 	| TmIntersect of coffeeTerm * coffeeTerm
+	
+(* Type Checker *) 
+let rec typeOf env e = match e with 
+    TmBool (b) -> BoolType
+  | TmEqualTo (e1, e2) -> BoolType
+  | TmInt (i) -> IntType
+  | TmGreaterThan (e1, e2) ->
+		(match (typeOf env e1), (typeOf env e2) with
+			IntType, IntType -> BoolType
+			| _ -> raise TypeError)
+  | TmLessThan (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with 
+			IntType, IntType -> BoolType
+			| _ -> raise TypeError)
+  | TmPlus (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with 
+            IntType, IntType -> IntType
+			| StringType, StringType -> StringType
+            |_ -> raise TypeError)
+  | TmMinus (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with 
+            IntType, IntType -> IntType
+            |_ -> raise TypeError)
+  | TmMult (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with 
+            IntType, IntType -> IntType
+            |_ -> raise TypeError)
+  | TmDiv (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with 
+            IntType, IntType -> IntType
+            | _ -> raise TypeError)
+  | TmString (s) -> StringType
+  | TmVar (v) ->  (try lookup env v with LookupError -> raise TypeError)
+  | TmWhile (e1, e2) -> 
+		(match (typeOf env e1), (typeOf env e2) with
+			BoolType, VoidType -> VoidType
+			| _ -> raise TypeError)
+;;
+
+(* TERRIFYING ENVIRONMENT STUFF BELOW*)
 
 
 (* this function is taken from lab 5. I have reasons to believe that it may be useful *)
@@ -38,4 +78,3 @@ type coffeeTerm =
             true -> thing
            |false -> lookup (Env (gs)) str 
 	)*)
-;;
