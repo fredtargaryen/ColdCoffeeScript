@@ -1,4 +1,5 @@
 all :
+	ocamlc -c coffeeInterpreter.ml
 	ocamllex lexer.mll
 	ocamlyacc parser.mly
 	ocamlc -c parser.mli
