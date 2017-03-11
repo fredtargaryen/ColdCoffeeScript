@@ -31,15 +31,16 @@ main:
 
 statements:
   | { [] } /* empty list to match null */
-  |	statement EOL statements { $1 :: $3 }	
-  | statement { $1 :: []}
+  |	statement EOL statements { $1 :: $3 }
+  |	EOL statement EOL statements { $2 :: $4 }	
+  | statement { [$1] }
   | EOL { [] }
 ;
 
 statement:
   | IDENT ASSIGN expr { TmAssign ($1, $3) } /* Don't think this works */
   | TRUE { TmBool true } /* Added for testing purposes so there is a "statement" you can put in if/while */
-  | IF expr DO statements ELSE statements { TmIf ($2, $4, $6) }
+  | IF expr DO statements ELSE statements END { TmIf ($2, $4, $6) }
   | WHILE expr DO statements END { TmWhile ($2, $4) }
 ;
 
