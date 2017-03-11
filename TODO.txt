@@ -1,5 +1,2 @@
--Finish Lexer
--Finish Parser
--Finish type checker
--Finish evaluator
--finish Makefile
+-Implement sets
+-Sit back and relax
