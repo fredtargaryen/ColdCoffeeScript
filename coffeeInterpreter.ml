@@ -4,7 +4,7 @@ exception StuckTerm;;
 exception SomeWeirdType;;
 
 (* Language Types *)
-type coffeeType = BoolType | IntType | StringType | SetType | VoidType
+type coffeeType = BoolType | IntType | StringType | SetType | AssignType
 
 (* Language Grammar *)
 type coffeeTerm = 
@@ -13,7 +13,6 @@ type coffeeTerm =
 	| TmString of string 
 	| TmSet of coffeeTerm
 	| TmVar of string
-	| TmUnit of unit
 	| TmAssign of string * coffeeTerm 
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
@@ -102,9 +101,39 @@ let rec typeOf env e = match e with
 
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with
-			BoolType, VoidType -> VoidType
-			| _ -> raise TypeError);;
-			
+			BoolType, AssignType -> AssignType
+			| _ -> raise TypeError)
+  | TmSet (s) -> SetType 
+  | TmAssign (var, value) -> AssignType
+  | TmIf (b, v1, v2) -> 
+		(match (typeOf env b) with 
+			BoolType ->
+				(let returnType = (typeOf env v1) in
+					(match (typeOf env v2) with
+						returnType -> returnType
+					  | _ -> raise TypeError))
+		  | _ -> raise TypeError)
+  | TmUnion (s1, s2) ->
+		(match (typeOf env s1), (typeOf env s2) with
+			SetType, SetType -> SetType
+			| _ -> raise TypeError)
+  | TmDifference (s1, s2) ->
+		(match (typeOf env s1), (typeOf env s2) with
+			SetType, SetType -> SetType
+			| _ -> raise TypeError)
+  | TmConcat (s1, s2) ->
+		(match (typeOf env s1), (typeOf env s2) with
+			SetType, SetType -> SetType
+			| _ -> raise TypeError)
+  | TmIntersect (s1, s2) ->
+		(match (typeOf env s1), (typeOf env s2) with
+			SetType, SetType -> SetType
+			| _ -> raise TypeError)
+  | TmMemberOf (e, s) -> 
+		(match (typeOf env e), (typeOf env s) with
+			StringType, SetType -> BoolType
+			| _ -> raise TypeError)
+;;
 let typeProg e = typeOf (Env []) e ;;
 
 (*Evaluator*)
@@ -119,9 +148,9 @@ let rec isValue e = match e with
 ;;
 
 let rec bigEval e = match e with 
-  |  (TmVar x) -> raise StuckTerm 
-  |  e when (isValue(e)) -> e
-  |  TmEqualTo (e1, e2) -> 	let v1 = bigEval e1 in 
+    TmVar(x) -> raise StuckTerm 
+  | e when (isValue(e)) -> e
+  | TmEqualTo (e1, e2) -> 	let v1 = bigEval e1 in 
 								let v2 = bigEval e2 in
 									(match (v1, v2) with
 										(TmBool (b1), TmBool (b2)) -> TmBool(b1 == b2)
@@ -162,8 +191,7 @@ let rec bigEval e = match e with
 (*  |  TmIf(b,e1,e2) -> let bv = bigEval b in (match bv with *)
                                            (*|  (TmBool(true)) -> bigEval e1*) 
                                            (*|  (TmBool(false)) -> bigEval e2*) 
-                                           (*| _ -> raise StuckTerm*) 
-                                           (*)*)
+                                           (*| _ -> raise StuckTerm)*) 
 (*  |   TmLet(x,tT,e1,e2) -> let v = bigEval e1 in (bigEval (subst v x e2))*)
 (*  |   TmApp(TmAbs(x,tT,e1), e2) -> let v = bigEval e2 in (bigEval (subst v x e1))*)
 ;;

@@ -6,7 +6,7 @@
 %token <int> INT
 %token <string> STRING
 %token <string> IDENT
-%token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
+%token BOOLTYPE INTTYPE STRINGTYPE SETTYPE ASSIGNTYPE
 %token PLUS MINUS TIMES DIV
 %token LPAREN RPAREN
 %token ASSIGN EQUALTO
@@ -33,7 +33,7 @@ coffeetype:
     BOOLTYPE	{ BoolType }
   | INTTYPE		{ IntType }
   | STRINGTYPE	{ StringType }
-  | VOIDTYPE	{ VoidType }
+  | ASSIGNTYPE	{ AssignType }
 ;
 
 expr:
