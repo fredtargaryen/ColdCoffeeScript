@@ -8,7 +8,8 @@ type coffeeType = BoolType | IntType | StringType | SetType | AssignType
 
 (* Language Grammar *)
 type coffeeTerm = 
-	  TmInt of int 
+	  TmProgram of coffeeTerm list
+	| TmInt of int 
 	| TmBool of bool 
 	| TmString of string 
 	| TmSet of coffeeTerm
@@ -17,8 +18,8 @@ type coffeeTerm =
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
-	| TmIf of coffeeTerm * coffeeTerm * coffeeTerm
-	| TmWhile of coffeeTerm * coffeeTerm
+	| TmIf of coffeeTerm * coffeeTerm list * coffeeTerm list
+	| TmWhile of coffeeTerm * coffeeTerm list
 	| TmPlus of coffeeTerm * coffeeTerm
 	| TmMinus of coffeeTerm * coffeeTerm
 	| TmMult of coffeeTerm * coffeeTerm
@@ -148,7 +149,7 @@ let rec isValue e = match e with
 ;;
 
 let rec bigEval e = match e with 
-    TmVar(x) -> raise StuckTerm 
+   | TmVar(x) -> raise StuckTerm 
   | e when (isValue(e)) -> e
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval e1 in 
 								let v2 = bigEval e2 in
@@ -200,4 +201,4 @@ let print_res res = match res with
     | (TmInt i) -> print_int i ; print_string " : Int" 
     | (TmBool b) -> print_string (if b then "true" else "false") ; print_string " : Bool"
     | (TmString s) -> print_string s
-    | _ -> raise SomeWeirdType;;
+    | _ -> raise SomeWeirdType;; 
