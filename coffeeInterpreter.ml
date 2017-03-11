@@ -88,6 +88,18 @@ let rec typeOf env e = match e with
             | _ -> raise TypeError)
   | TmString (s) -> StringType
   | TmVar (v) ->  (try lookup env v with LookupError -> raise TypeError)
+
+  (* This is my attempt at a while loop type check. Please review
+  	  it incase it actually works :) (which is unlikely probably) *)
+  (*|TmWhile(e1, e2) -> (
+		let ty1 = typeOf env e1 in
+			match ty1 with
+				BoolType -> typeOf env e2
+
+		|_ raise TypeError
+	)*)
+
+
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with
 			BoolType, VoidType -> VoidType
