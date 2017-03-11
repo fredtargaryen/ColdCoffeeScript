@@ -26,7 +26,21 @@
 %type <Coffeeinterpreter.coffeeType> coffeetype
 %%
 main:
-   expr EOF                 { $1 }
+   	statements EOF					  { TmProgram $1 }
+;
+
+statements:
+  | { [] } /* empty list to match null */
+  |	statement EOL statements { $1 :: $3 }	
+  | statement { $1 :: []}
+  | EOL { [] }
+;
+
+statement:
+  | IDENT ASSIGN expr { TmAssign ($1, $3) } /* Don't think this works */
+  | TRUE { TmBool true } /* Added for testing purposes so there is a "statement" you can put in if/while */
+  | IF expr DO statements ELSE statements { TmIf ($2, $4, $6) }
+  | WHILE expr DO statements END { TmWhile ($2, $4) }
 ;
 
 coffeetype:
@@ -37,7 +51,7 @@ coffeetype:
 ;
 
 expr:
-    TRUE							{ TmBool true }
+  /*  TRUE							{ TmBool true } */ /* Temporarily moved to statement for testing */
   | FALSE							{ TmBool false }
   | expr EQUALTO expr 				{ TmEqualTo ($1, $3) }  
   | INT								{ TmInt $1 }
@@ -50,7 +64,7 @@ expr:
   | STRING							{ TmString $1 }
   |	IDENT							{ TmVar $1 }
   | LPAREN expr RPAREN      		{ $2 }
-  | WHILE expr DO expr END  		{ TmWhile ($2, $4) }
+ /* | WHILE expr DO expr END  		{ TmWhile ($2, $4) } */
 /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 /*  | BOOLTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
 /*  | STRINGTYPE expr ASSIGN expr 	{ TmAssign ($2, $4) } */
