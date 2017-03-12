@@ -20,7 +20,8 @@ type coffeeTerm =
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
-	| TmIf of coffeeTerm * coffeeTerm list * coffeeTerm list
+	| TmIfElse of coffeeTerm * coffeeTermList * coffeeTermList
+	| TmIf of coffeeTerm * coffeeTerm list
 	| TmWhile of coffeeTerm * coffeeTerm list
 	| TmPlus of coffeeTerm * coffeeTerm
 	| TmMinus of coffeeTerm * coffeeTerm
@@ -101,7 +102,12 @@ let rec typeOf env e = match e with
 			| _ -> raise TypeError)
   | TmSet (s) -> SetType 
   | TmAssign (var, value) -> VoidType
-  | TmIf (b, v1, v2) -> 
+  | TmIf (b, v1) -> 
+  		(match (typeOf env b), v1 with
+  			BoolType, h1 :: t1 ->
+  				(if(typeOf env (TmProgram v1) == VoidType) then VoidType else raise TypeError)
+  		| _ -> raise TypeError)
+  | TmIfElse (b, v1, v2) -> 
 		(match (typeOf env b), v1, v2 with 
 			BoolType, h1 :: t1, h2 :: t2 ->
 				(if (typeOf env (TmProgram v1) == VoidType) && (typeOf env (TmProgram v2) == VoidType) then VoidType else raise TypeError)
@@ -191,8 +197,12 @@ let rec bigEval env e = match e with
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
 							  | _ -> raise StuckTerm)
-(*CONTROL FLOW*)							  
-  |  TmIf(b,e1,e2) -> let bv = bigEval env b in (match bv with 
+(*CONTROL FLOW*)					
+  |  TmIf(b,e1) -> let bv = bigEval env b in (match bv with 
+                                            (TmBool true) -> bigEval env (TmProgram e1) 
+                                          | (TmBool false) -> e 
+                                          | _ -> raise StuckTerm)		  
+  |  TmIfElse(b,e1,e2) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> bigEval env (TmProgram e2) 
                                           | _ -> raise StuckTerm)
