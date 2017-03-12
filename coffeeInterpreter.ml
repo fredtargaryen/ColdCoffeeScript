@@ -3,6 +3,8 @@ exception TypeError;;
 exception StuckTerm;;
 exception SomeWeirdType;;
 
+open Language
+
 (* Language Types *)
 type coffeeType = BoolType | IntType | StringType | SetType | VoidType
 
@@ -12,7 +14,7 @@ type coffeeTerm =
 	| TmInt of int 
 	| TmBool of bool 
 	| TmString of string 
-	| TmSet of coffeeTerm
+	| TmSet of Language.t
 	| TmVar of string
 	| TmAssign of string * coffeeTerm 
 	| TmLessThan of coffeeTerm * coffeeTerm
@@ -136,7 +138,7 @@ let typeProg e = typeOf (Env []) e ;;
 let rec isValue e = match e with 
   | TmInt(i) -> true
   | TmBool(b) -> true 
-  (*| TmSet(x,tT,e') -> true*)
+  | TmSet(s) -> true
   | TmString(s) -> true
   | _ -> false 
 ;;
@@ -149,6 +151,7 @@ let rec bigEval env e = match e with
   | TmVar(x) -> raise StuckTerm 
   | e when (isValue(e)) -> e
   | TmAssign (var, v2) -> raise StuckTerm
+(*EQUALITY*)
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
 									(match (v1, v2) with
@@ -166,6 +169,7 @@ let rec bigEval env e = match e with
 								(match (v1,v2) with 
 									(TmInt(i1), TmInt(i2)) -> TmBool(i1 < i2) 
 								  | _ -> raise StuckTerm)
+(*ARITHMETIC (and concatenation)*)
   | TmPlus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
@@ -187,11 +191,36 @@ let rec bigEval env e = match e with
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
 							  | _ -> raise StuckTerm)
+(*CONTROL FLOW*)							  
   |  TmIf(b,e1,e2) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> bigEval env (TmProgram e2) 
-                                          | _ -> raise StuckTerm) 
-(*  |   TmLet(x,tT,e1,e2) -> let v = bigEval e1 in (bigEval (subst v x e2))*)
+                                          | _ -> raise StuckTerm)
+  | TmWhile(b, p) -> let bv = bigEval env b in (match bv with
+											(TmBool true) -> let _ = bigEval env (TmProgram p) in bigEval env e
+								 		  | (TmBool false) -> e
+										  | _ -> raise StuckTerm)
+(*SET OPERATIONS*)
+  | TmUnion (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in 
+								(match (v1, v2) with
+									(TmSet s1, TmSet s2) -> TmSet(Language.union s1 s2)
+								  | _ -> raise StuckTerm)
+  | TmDifference (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in 
+								(match (v1, v2) with
+									(TmSet s1, TmSet s2) -> TmSet(Language.diff s1 s2)
+								  | _ -> raise StuckTerm)
+  | TmIntersect (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in 
+								(match (v1, v2) with
+									(TmSet s1, TmSet s2) -> TmSet(Language.inter s1 s2)
+								  | _ -> raise StuckTerm)
+  | TmMemberOf (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in
+								(match (v1, v2) with
+									(TmString el, TmSet s) -> TmBool (Language.mem el s)
+								  | _ -> raise StuckTerm)
 ;;
 
 let eval e = bigEval (Env[]) e;;
