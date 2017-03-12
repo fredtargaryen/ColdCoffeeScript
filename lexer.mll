@@ -3,8 +3,8 @@
 open Parser        (* The type main_lex is defined in parser.mli *)
 }
 rule main_lex = parse
-      [' ' '\t']     { main_lex lexbuf }     (* skip blanks *)
-    | '\n'  { EOL }
+      [' ' '\t' '\n']     { main_lex lexbuf }     (* skip blanks *)
+    | ';'  			{ STMTSEP }
     | ['0'-'9']+ as lxm  { INT(int_of_string lxm) }
     | ['A'-'Z']+ as lxm  { IDENT(lxm) }
 	| '\"'['a'-'z']+'\"' as lxm { STRING(lxm) }

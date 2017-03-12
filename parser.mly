@@ -6,7 +6,7 @@
 %token <int> INT
 %token <string> STRING
 %token <string> IDENT
-%token BOOLTYPE INTTYPE STRINGTYPE SETTYPE ASSIGNTYPE
+%token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
 %token PLUS MINUS TIMES DIV
 %token LPAREN RPAREN
 %token ASSIGN EQUALTO
@@ -14,7 +14,7 @@
 %token TRUE FALSE
 %token UNION INTERSECT CONCAT DIFFERENCE MEMBEROF
 %token FOR WHILE DO END IF ELSE
-%token EOL
+%token STMTSEP
 %token EOF
 %token SETSTART SETEND STRINGSEP
 %left PLUS MINUS        /* lowest precedence */
@@ -31,10 +31,8 @@ main:
 
 statements:
   | { [] } /* empty list to match null */
-  |	statement EOL statements { $1 :: $3 }
-  |	EOL statement EOL statements { $2 :: $4 }	
-  | statement { [$1] }
-  | EOL { [] }
+  |	statement STMTSEP statements { $1 :: $3 }	
+  | statement STMTSEP { [$1] }
 ;
 
 statement:
@@ -48,7 +46,7 @@ coffeetype:
     BOOLTYPE	{ BoolType }
   | INTTYPE		{ IntType }
   | STRINGTYPE	{ StringType }
-  | ASSIGNTYPE	{ AssignType }
+  | VOIDTYPE	{ VoidType }
 ;
 
 expr:
@@ -64,8 +62,7 @@ expr:
   | expr DIV expr           		{ TmDiv ($1, $3) }
   | STRING							{ TmString $1 }
   |	IDENT							{ TmVar $1 }
-  | LPAREN expr RPAREN      		{ $2 }
- /* | WHILE expr DO expr END  		{ TmWhile ($2, $4) } */
+  | LPAREN expr RPAREN      		{ $2 } 
 /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 /*  | BOOLTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
 /*  | STRINGTYPE expr ASSIGN expr 	{ TmAssign ($2, $4) } */

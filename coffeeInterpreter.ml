@@ -4,7 +4,7 @@ exception StuckTerm;;
 exception SomeWeirdType;;
 
 (* Language Types *)
-type coffeeType = BoolType | IntType | StringType | SetType | AssignType
+type coffeeType = BoolType | IntType | StringType | SetType | VoidType
 
 (* Language Grammar *)
 type coffeeTerm = 
@@ -55,10 +55,15 @@ let addBinding env str thing = match env with
 	  
 	  
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
-
+		
 (* Type Checker *) 
 let rec typeOf env e = match e with 
-    TmBool (b) -> BoolType
+    TmProgram (l) -> 
+		(match l with
+			[] -> VoidType
+			| hd :: tl -> let _ = (typeOf env hd) in (typeOf env (TmProgram tl))
+			| _ -> raise TypeError)
+  | TmBool (b) -> BoolType
   | TmEqualTo (e1, e2) -> BoolType
   | TmInt (i) -> IntType
   | TmGreaterThan (e1, e2) ->
@@ -88,31 +93,20 @@ let rec typeOf env e = match e with
             | _ -> raise TypeError)
   | TmString (s) -> StringType
   | TmVar (v) ->  (try lookup env v with LookupError -> raise TypeError)
-
-  (* This is my attempt at a while loop type check. Please review
-  	  it incase it actually works :) (which is unlikely probably) *)
-  (*|TmWhile(e1, e2) -> (
-		let ty1 = typeOf env e1 in
-			match ty1 with
-				BoolType -> typeOf env e2
-
-		|_ raise TypeError
-	)*)
-
-
   | TmWhile (e1, e2) -> 
-		(match (typeOf env e1), (typeOf env e2) with
-			BoolType, AssignType -> AssignType
+		(match (typeOf env e1), e2 with
+			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
 			| _ -> raise TypeError)
   | TmSet (s) -> SetType 
-  | TmAssign (var, value) -> AssignType
+  | TmAssign (var, value) -> VoidType
   | TmIf (b, v1, v2) -> 
-		(match (typeOf env b) with 
-			BoolType ->
-				(let returnType = (typeOf env v1) in
-					(match (typeOf env v2) with
+		(match (typeOf env b), v1, v2 with 
+			BoolType, h1 :: t1, h2 :: t2 ->
+				(if (typeOf env (TmProgram v1) == VoidType) && (typeOf env (TmProgram v2) == VoidType) then VoidType else raise TypeError)
+				(*(let returnType = (typeOf env (TmProgram v1)) in
+					(match (typeOf env (TmProgram v2)) with
 						returnType -> returnType
-					  | _ -> raise TypeError))
+					  | _ -> raise TypeError))*)
 		  | _ -> raise TypeError)
   | TmUnion (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with
