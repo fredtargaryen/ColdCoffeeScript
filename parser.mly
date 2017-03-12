@@ -9,17 +9,16 @@
 %token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
 %token PLUS MINUS TIMES DIV
 %token LPAREN RPAREN
-%token ASSIGN EQUALTO
-%token GREATERTHAN LESSTHAN
+%token ASSIGN EQUALTO GREATERTHAN LESSTHAN
 %token TRUE FALSE
 %token UNION INTERSECT CONCAT DIFFERENCE MEMBEROF
 %token FOR WHILE DO END IF ELSE
 %token STMTSEP
 %token EOF
 %token SETSTART SETEND STRINGSEP
-%left PLUS MINUS        /* lowest precedence */
+%left ASSIGN EQUALTO GREATERTHAN LESSTHAN/* lowest precedence */
+%left PLUS MINUS        
 %left TIMES DIV         /* medium precedence */
-%left MODULO EXPO
 %nonassoc UMINUS        /* highest precedence */
 %start main             /* the entry point */
 %type <Coffeeinterpreter.coffeeTerm> main
@@ -38,8 +37,8 @@ statements:
 statement:
   | IDENT ASSIGN expr { TmAssign ($1, $3) } /* Don't think this works */
   | TRUE { TmBool true } /* Added for testing purposes so there is a "statement" you can put in if/while */
-  | IF expr DO statements END ELSE statements END { TmIfElse ($2, $4, $6) }
-  | IF expr DO statements END { TmIF ($2, $4) }
+  | IF expr DO statements ELSE statements END { TmIfElse ($2, $4, $6) }
+  | IF expr DO statements END { TmIf ($2, $4) }
   | WHILE expr DO statements END { TmWhile ($2, $4) }
 ;
 

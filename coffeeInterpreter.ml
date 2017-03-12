@@ -20,7 +20,7 @@ type coffeeTerm =
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
-	| TmIfElse of coffeeTerm * coffeeTermList * coffeeTermList
+	| TmIfElse of coffeeTerm * coffeeTerm list * coffeeTerm list
 	| TmIf of coffeeTerm * coffeeTerm list
 	| TmWhile of coffeeTerm * coffeeTerm list
 	| TmPlus of coffeeTerm * coffeeTerm
