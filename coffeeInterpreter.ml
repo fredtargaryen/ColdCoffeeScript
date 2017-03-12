@@ -133,7 +133,6 @@ let typeProg e = typeOf (Env []) e ;;
 
 (*Evaluator*)
 
-
 let rec isValue e = match e with 
   | TmInt(i) -> true
   | TmBool(b) -> true 
@@ -142,55 +141,62 @@ let rec isValue e = match e with
   | _ -> false 
 ;;
 
-let rec bigEval e = match e with 
-   | TmVar(x) -> raise StuckTerm 
+let rec bigEval env e = match e with 
+	TmProgram (sl) -> 
+		(match sl with
+			[] -> e
+		  | h :: t -> let _ = bigEval env h in bigEval env (TmProgram t))
+  | TmVar(x) -> raise StuckTerm 
   | e when (isValue(e)) -> e
-  | TmEqualTo (e1, e2) -> 	let v1 = bigEval e1 in 
-								let v2 = bigEval e2 in
+  | TmAssign (var, v2) -> raise StuckTerm
+  | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
+								let v2 = bigEval env e2 in
 									(match (v1, v2) with
 										(TmBool (b1), TmBool (b2)) -> TmBool(b1 == b2)
 									  | (TmInt (i1), TmInt (i2)) -> TmBool(i1 == i2)
 									  | (TmString (s1), TmString (s2)) -> TmBool(s1 == s2)
 									  | _ -> raise StuckTerm)
-  | TmGreaterThan (e1,e2) -> let v1 = bigEval e1 in 
-								let v2 = bigEval e2 in
+  | TmGreaterThan (e1,e2) -> let v1 = bigEval env e1 in 
+								let v2 = bigEval env e2 in
 									(match (v1,v2) with 
 										(TmInt(i1), TmInt(i2)) -> TmBool(i1 > i2) 
 									  | _ -> raise StuckTerm)									  
-  | TmLessThan(e1,e2) -> let v1 = bigEval e1 in 
-							let v2 = bigEval e2 in
+  | TmLessThan(e1,e2) -> let v1 = bigEval env e1 in 
+							let v2 = bigEval env e2 in
 								(match (v1,v2) with 
 									(TmInt(i1), TmInt(i2)) -> TmBool(i1 < i2) 
 								  | _ -> raise StuckTerm)
-  | TmPlus(e1,e2) -> let v1 = bigEval e1 in 
-						let v2 = bigEval e2 in
+  | TmPlus(e1,e2) -> let v1 = bigEval env e1 in 
+						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 + i2) 
 							  | (TmString(s1), TmString(s2)) -> TmString(s1 ^ s2)
 							  | _ -> raise StuckTerm)
-  | TmMinus(e1,e2) -> let v1 = bigEval e1 in 
-						let v2 = bigEval e2 in
+  | TmMinus(e1,e2) -> let v1 = bigEval env e1 in 
+						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 - i2) 
 							  | _ -> raise StuckTerm)
-  | TmMult(e1,e2) -> let v1 = bigEval e1 in 
-						let v2 = bigEval e2 in
+  | TmMult(e1,e2) -> let v1 = bigEval env e1 in 
+						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 * i2) 
 							  | _ -> raise StuckTerm)
-  | TmDiv(e1,e2) -> let v1 = bigEval e1 in 
-						let v2 = bigEval e2 in
+  | TmDiv(e1,e2) -> let v1 = bigEval env e1 in 
+						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
 							  | _ -> raise StuckTerm)
-(*  |  TmIf(b,e1,e2) -> let bv = bigEval b in (match bv with *)
-                                           (*|  (TmBool(true)) -> bigEval e1*) 
-                                           (*|  (TmBool(false)) -> bigEval e2*) 
-                                           (*| _ -> raise StuckTerm)*) 
+  |  TmIf(b,e1,e2) -> let bv = bigEval env b in (match bv with 
+                                            (TmBool true) -> bigEval env e1 
+                                          | (TmBool false) -> bigEval env e2 
+                                          | _ -> raise StuckTerm) 
 (*  |   TmLet(x,tT,e1,e2) -> let v = bigEval e1 in (bigEval (subst v x e2))*)
-(*  |   TmApp(TmAbs(x,tT,e1), e2) -> let v = bigEval e2 in (bigEval (subst v x e1))*)
 ;;
 
+let eval e = bigEval (Env[]) e;;
+
+(*PRINTING FINAL VALUE*)
 let print_res res = match res with
     | (TmInt i) -> print_int i ; print_string " : Int" 
     | (TmBool b) -> print_string (if b then "true" else "false") ; print_string " : Bool"

@@ -19,6 +19,6 @@ let parsedProg = parseProgram !arg in
 let () = print_string "Program Parsed" ; print_newline() in
 let _ = typeProg parsedProg in
 let () = print_string "Program Type Checked" ; print_newline() in
-let result = bigEval parsedProg in
+let result = eval parsedProg in
 let () = print_string "Program Evaluated using big step semantics to ==> "; print_res result; print_newline() in
 flush stdout
