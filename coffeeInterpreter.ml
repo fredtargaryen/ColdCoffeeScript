@@ -221,6 +221,11 @@ let rec bigEval env e = match e with
 								(match (v1, v2) with
 									(TmString el, TmSet s) -> TmBool (Language.mem el s)
 								  | _ -> raise StuckTerm)
+  | TmConcat (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in
+								(match (v1, v2) with
+									(TmSet s1, TmSet s2) -> TmSet (Language.concat s1 s2)
+								  | _ -> raise StuckTerm)
 ;;
 
 let eval e = bigEval (Env[]) e;;
