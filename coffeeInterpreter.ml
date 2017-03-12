@@ -16,7 +16,7 @@ type coffeeTerm =
 	| TmString of string 
 	| TmSet of Language.t
 	| TmVar of string
-	| TmAssign of string * coffeeTerm 
+	| TmAssign of coffeeType * string * coffeeTerm 
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
@@ -101,7 +101,11 @@ let rec typeOf env e = match e with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
 			| _ -> raise TypeError)
   | TmSet (s) -> SetType 
-  | TmAssign (var, value) -> VoidType
+  | TmAssign (varType, var, value) -> 
+		(let type1 = typeOf (addBinding env var value) value in
+			(match (type1 = varType) with
+				true -> type1
+			  | false -> raise TypeError))
   | TmIf (b, v1) -> 
   		(match (typeOf env b), v1 with
   			BoolType, h1 :: t1 ->

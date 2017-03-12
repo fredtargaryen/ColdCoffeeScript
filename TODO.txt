@@ -1,2 +1,4 @@
--Implement sets
--Sit back and relax
+-Assignment
+-Way to access parameters L0, ..., Ln and K
+-Display set command
+-Stop program command (maybe; no good reason yet)

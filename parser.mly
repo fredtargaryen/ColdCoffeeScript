@@ -35,7 +35,7 @@ statements:
 ;
 
 statement:
-  | IDENT ASSIGN expr { TmAssign ($1, $3) } /* Don't think this works */
+  | coffeetype IDENT ASSIGN expr { TmAssign ($1, $2, $4) }
   | TRUE { TmBool true } /* Added for testing purposes so there is a "statement" you can put in if/while */
   | IF expr DO statements ELSE statements END { TmIfElse ($2, $4, $6) }
   | IF expr DO statements END { TmIf ($2, $4) }
@@ -46,6 +46,7 @@ coffeetype:
     BOOLTYPE	{ BoolType }
   | INTTYPE		{ IntType }
   | STRINGTYPE	{ StringType }
+  | SETTYPE		{ SetType }
   | VOIDTYPE	{ VoidType }
 ;
 
@@ -64,7 +65,4 @@ expr:
   |	IDENT							{ TmVar $1 }
   | LPAREN expr RPAREN      		{ $2 } 
 /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
-/*  | BOOLTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
-/*  | STRINGTYPE expr ASSIGN expr 	{ TmAssign ($2, $4) } */
-/*  | INTTYPE expr ASSIGN expr		{ TmAssign ($2, $4) } */
 ;
