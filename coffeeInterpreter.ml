@@ -188,8 +188,8 @@ let rec bigEval env e = match e with
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
 							  | _ -> raise StuckTerm)
   |  TmIf(b,e1,e2) -> let bv = bigEval env b in (match bv with 
-                                            (TmBool true) -> bigEval env e1 
-                                          | (TmBool false) -> bigEval env e2 
+                                            (TmBool true) -> bigEval env (TmProgram e1) 
+                                          | (TmBool false) -> bigEval env (TmProgram e2) 
                                           | _ -> raise StuckTerm) 
 (*  |   TmLet(x,tT,e1,e2) -> let v = bigEval e1 in (bigEval (subst v x e2))*)
 ;;
