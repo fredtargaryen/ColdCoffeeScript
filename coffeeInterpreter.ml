@@ -21,6 +21,9 @@ type coffeeTerm =
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
+	| TmNot of coffeeTerm
+	| TmAnd of coffeeTerm * coffeeTerm
+	| TmOr of coffeeTerm * coffeeTerm
 	| TmIfElse of coffeeTerm * coffeeTerm list * coffeeTerm list
 	| TmIf of coffeeTerm * coffeeTerm list
 	| TmWhile of coffeeTerm * coffeeTerm list
@@ -33,6 +36,7 @@ type coffeeTerm =
 	| TmMemberOf of coffeeTerm * coffeeTerm
 	| TmConcat of coffeeTerm * coffeeTerm
 	| TmIntersect of coffeeTerm * coffeeTerm
+	| TmDisplay of coffeeTerm * coffeeTerm
 	
 (* START OF TERRIFYING ENVIRONMENT STUFF*)
 
@@ -77,6 +81,18 @@ let rec typeOf env e = match e with
   | TmLessThan (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
 			IntType, IntType -> BoolType
+			| _ -> raise TypeError)
+  | TmNot (e1) ->
+		(match (typeOf env e1) with
+			BoolType -> BoolType
+			| _ -> raise TypeError)
+  | TmAnd (e1, e2) ->
+		(match (typeOf env e1), (typeOf env e2) with
+			BoolType, BoolType -> BoolType
+			| _ -> raise TypeError)
+  | TmOr (e1, e2) ->
+		(match (typeOf env e1), (typeOf env e2) with
+			BoolType, BoolType -> BoolType
 			| _ -> raise TypeError)
   | TmPlus (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
@@ -142,7 +158,12 @@ let rec typeOf env e = match e with
 		(match (typeOf env e), (typeOf env s) with
 			StringType, SetType -> BoolType
 			| _ -> raise TypeError)
+  | TmDisplay (s, i) ->
+		(match (typeOf env s), (typeOf env i) with
+			SetType, IntType -> VoidType
+			| _ -> raise TypeError)
 ;;
+
 let typeProg e = typeOf (Env []) e ;;
 
 (*Evaluator*)
@@ -177,11 +198,26 @@ let rec bigEval env e = match e with
 									(match (v1,v2) with 
 										(TmInt(i1), TmInt(i2)) -> TmBool(i1 > i2) 
 									  | _ -> raise StuckTerm)									  
-  | TmLessThan(e1,e2) -> let v1 = bigEval env e1 in 
+  | TmLessThan (e1,e2) -> let v1 = bigEval env e1 in 
 							let v2 = bigEval env e2 in
 								(match (v1,v2) with 
 									(TmInt(i1), TmInt(i2)) -> TmBool(i1 < i2) 
 								  | _ -> raise StuckTerm)
+(*BOOLEAN SHIT!!!*)
+  | TmNot (e1) -> let v1 = bigEval env e1 in
+					(match (v1) with
+						(TmBool b) -> TmBool (not b)
+						| _ -> raise StuckTerm)
+  | TmAnd (e1, e2) -> let v1 = bigEval env e1 in
+						let v2 = bigEval env e2 in
+							(match (v1, v2) with
+								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 && b2)
+							  | _ -> raise StuckTerm)
+  | TmOr (e1, e2) -> let v1 = bigEval env e1 in
+						let v2 = bigEval env e2 in
+							(match (v1, v2) with
+								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 || b2)
+							  | _ -> raise StuckTerm)
 (*ARITHMETIC (and concatenation)*)
   | TmPlus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
@@ -243,6 +279,11 @@ let rec bigEval env e = match e with
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet (concat s1 s2)
+								  | _ -> raise StuckTerm)
+  | TmDisplay (e1, e2) -> let v1 = bigEval env e1 in
+							let v2 = bigEval env e2 in
+								(match (v1, v2) with
+									(TmSet s, TmInt i) -> print_string (display s i); e
 								  | _ -> raise StuckTerm)
 ;;
 

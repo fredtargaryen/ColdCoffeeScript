@@ -7,7 +7,7 @@ rule main_lex = parse
     | ';'  			{ STMTSEP }
     | ['0'-'9']+ as lxm  { INT(int_of_string lxm) }
     | ['A'-'Z']+ as lxm  { IDENT(lxm) }
-	| '\"'['a'-'z']+'\"' as lxm { STRING(lxm) }
+	| '\"'(['a'-'z']+|':')'\"' as lxm { STRING(lxm) }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
     | "string"     { STRINGTYPE }
@@ -35,7 +35,11 @@ rule main_lex = parse
     | "end"        { END }
     | "if"         { IF }
     | "else"       { ELSE }
+	| "and"		   { AND }
+	| "or" 		   { OR }
+	| "not"		   { NOT }
     | eof          { EOF }
 	| '{'		   { SETSTART }
 	| '}'		   { SETEND }
 	| ','		   { STRINGSEP }
+	| "display"	   { DISPLAY }

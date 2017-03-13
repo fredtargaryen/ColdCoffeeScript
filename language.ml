@@ -31,7 +31,7 @@ module Language = Set.Make(CoffeeString);;
 
 let rec display_aux s i = 
 		if i == 1 then
-			(Language.min_elt s) ^ "}"
+			(Language.min_elt s) ^ "}\n"
 		else
 			let first = Language.min_elt s in
 				first ^ "," ^ (display_aux (Language.remove first s) (i - 1));;

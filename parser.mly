@@ -8,6 +8,7 @@
 %token <string> IDENT
 %token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
 %token PLUS MINUS TIMES DIV
+%token NOT AND OR
 %token LPAREN RPAREN
 %token ASSIGN EQUALTO GREATERTHAN LESSTHAN
 %token TRUE FALSE
@@ -15,10 +16,11 @@
 %token FOR WHILE DO END IF ELSE
 %token STMTSEP
 %token EOF
+%token DISPLAY
 %token SETSTART SETEND STRINGSEP
-%left ASSIGN EQUALTO GREATERTHAN LESSTHAN/* lowest precedence */
-%left PLUS MINUS        
-%left TIMES DIV         /* medium precedence */
+%left ASSIGN EQUALTO GREATERTHAN LESSTHAN OR/* lowest precedence */
+%left PLUS MINUS AND 
+%left TIMES DIV NOT        /* medium precedence */
 %nonassoc UMINUS        /* highest precedence */
 %start main             /* the entry point */
 %type <Coffeeinterpreter.coffeeTerm> main
@@ -40,6 +42,7 @@ statement:
   | IF expr DO statements ELSE statements END { TmIfElse ($2, $4, $6) }
   | IF expr DO statements END { TmIf ($2, $4) }
   | WHILE expr DO statements END { TmWhile ($2, $4) }
+  | DISPLAY expr expr				{ TmDisplay ($2, $3) }
 ;
 
 coffeetype:
@@ -71,5 +74,13 @@ expr:
   |	IDENT							{ TmVar $1 }
   | SETSTART strings SETEND			{ TmSetLiteral $2 }
   | LPAREN expr RPAREN      		{ $2 } 
+  | NOT expr						{ TmNot $2 }
+  | expr AND expr 					{ TmAnd ($1, $3) }
+  | expr OR expr					{ TmOr ($1, $3) }
+  | expr UNION expr					{ TmUnion ($1, $3) }
+  | expr INTERSECT expr				{ TmIntersect ($1, $3) }
+  | expr CONCAT expr				{ TmConcat ($1, $3) }
+  | expr DIFFERENCE expr 			{ TmDifference ($1, $3) }
+  | expr MEMBEROF expr				{ TmMemberOf ($1, $3) }
 /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 ;
