@@ -102,7 +102,7 @@ let rec typeOf env e = match e with
 			| _ -> raise TypeError)
   | TmSet (s) -> SetType 
   | TmAssign (varType, var, value) -> 
-		(let type1 = typeOf (addBinding env var value) value in
+		(let type1 = typeOf (addBinding env var varType) value in
 			(match (type1 = varType) with
 				true -> type1
 			  | false -> raise TypeError))
@@ -160,7 +160,7 @@ let rec bigEval env e = match e with
 		  | h :: t -> let _ = bigEval env h in bigEval env (TmProgram t))
   | TmVar(x) -> raise StuckTerm 
   | e when (isValue(e)) -> e
-  | TmAssign (var, v2) -> raise StuckTerm
+  | TmAssign (varType, var, value) -> let v1 = bigEval env
 (*EQUALITY*)
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
