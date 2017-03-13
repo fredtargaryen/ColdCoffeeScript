@@ -60,3 +60,14 @@ let concat olds1 olds2 =
 	let s1 = olds1 in
 		let s2 = olds2 in
 			concat_aux s1 s2 olds2 Language.empty;;
+			
+let rec of_list_program l = 
+	match l with 
+		[] -> Language.empty
+		(*Same as with input but remove speech marks*)
+	  | h :: t -> Language.add (String.sub h 1 (String.length h - 2)) (of_list_program t);;
+	  
+let rec of_list_input l = 
+	match l with
+		[] -> Language.empty
+	  | h :: t -> Language.add h (of_list_input t);;

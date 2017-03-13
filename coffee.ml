@@ -13,7 +13,7 @@ let parseProgram c =
 	
 let arg = ref stdin in
 let setProg p = arg := open_in p in
-let usage = "./main PROGRAM_FILE INPUT_FILE" in
+let usage = "./main PROGRAM_FILE" in
 parse [] setProg usage ; 
 let parsedProg = parseProgram !arg in
 let () = print_string "Program Parsed" ; print_newline() in

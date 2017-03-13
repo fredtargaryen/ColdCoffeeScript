@@ -50,6 +50,12 @@ coffeetype:
   | VOIDTYPE	{ VoidType }
 ;
 
+strings:
+								{ [] }
+  | STRING						{ [$1] }
+  | STRING STRINGSEP strings	{ $1 :: $3 }
+;;
+
 expr:
   /*  TRUE							{ TmBool true } */ /* Temporarily moved to statement for testing */
   | FALSE							{ TmBool false }
@@ -63,6 +69,7 @@ expr:
   | expr DIV expr           		{ TmDiv ($1, $3) }
   | STRING							{ TmString $1 }
   |	IDENT							{ TmVar $1 }
+  | SETSTART strings SETEND			{ TmSetLiteral $2 }
   | LPAREN expr RPAREN      		{ $2 } 
 /* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 ;

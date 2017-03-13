@@ -14,6 +14,7 @@ type coffeeTerm =
 	| TmInt of int 
 	| TmBool of bool 
 	| TmString of string 
+	| TmSetLiteral of string list
 	| TmSet of Language.t
 	| TmVar of string
 	| TmAssign of coffeeType * string * coffeeTerm 
@@ -101,6 +102,7 @@ let rec typeOf env e = match e with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
 			| _ -> raise TypeError)
   | TmSet (s) -> SetType 
+  | TmSetLiteral (s) -> SetType
   | TmAssign (varType, var, value) -> 
 		(let type1 = typeOf (addBinding env var varType) value in
 			(match (type1 = varType) with
@@ -160,7 +162,8 @@ let rec bigEval env e = match e with
 		  | h :: t -> let _ = bigEval env h in bigEval env (TmProgram t))
   | TmVar(x) -> raise StuckTerm 
   | e when (isValue(e)) -> e
-  | TmAssign (varType, var, value) -> let v1 = bigEval env
+  | TmAssign (varType, var, value) -> let v1 = bigEval env value in
+										(addBinding env var v1); e
 (*EQUALITY*)
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
@@ -215,6 +218,7 @@ let rec bigEval env e = match e with
 								 		  | (TmBool false) -> e
 										  | _ -> raise StuckTerm)
 (*SET OPERATIONS*)
+  | TmSetLiteral (e1) -> TmSet (of_list_program e1)
   | TmUnion (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
