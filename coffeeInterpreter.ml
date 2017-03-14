@@ -48,19 +48,19 @@ type typeContext = coffeeType context
 type valContext = coffeeTerm context
 
 (* Function to look up the type of a string name variable in a type environment *)
-let rec lookup env str = match env with 
+let rec lookup env str = match !env with 
    Env [] -> raise LookupError  
   |Env ((name,thing) :: gs) -> 
         ( 
           match (name = str) with 
             true -> thing
-           |false -> lookup (Env (gs)) str 
+           |false -> lookup (ref (Env (gs))) str 
 	)
 ;;
 
 (* Function to add an extra entry in to an environment *)
-let addBinding env str thing = match env with 
-      Env(gs) -> Env ( (str, thing) :: gs ) ;;
+let addBinding env str thing = match !env with 
+      Env(gs) -> env := Env ( (str, thing) :: gs ); env ;;
 	  
 	  
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
@@ -162,7 +162,7 @@ let rec typeOf env e = match e with
 			| _ -> raise TypeError)
 ;;
 
-let typeProg typeEnv e = typeOf (Env typeEnv) e ;;
+let typeProg typeEnv e = typeOf (ref (Env typeEnv)) e ;;
 
 (*Evaluator*)
 
@@ -285,7 +285,7 @@ let rec bigEval env e = match e with
 								  | _ -> raise StuckTerm)
 ;;
 
-let eval initialEnv e = bigEval (Env initialEnv) e;;
+let eval initialEnv e = bigEval (ref (Env initialEnv)) e;;
 
 (*PRINTING FINAL VALUE*)
 let print_res res = match res with

@@ -38,9 +38,10 @@ let rec display_aux s i =
 	
 (*Set containing "t", "e", "s" and ":" would be displayed as "{:,e}" when i = 2*)
 let display s i = 
-	if i <= 0 then "{}"
-	else
-		"{" ^ (display_aux s (min i (Language.cardinal s)));;
+	if i <= 0 then "{}\n"
+	else 
+		if Language.is_empty s then "{}\n"
+		else "{" ^ (display_aux s (min i (Language.cardinal s)));;
 
 let rec concat_aux s1 s2 olds2 l =
 	if Language.is_empty s1 then l

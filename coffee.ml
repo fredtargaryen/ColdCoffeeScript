@@ -66,7 +66,7 @@ let progEnv = get_lists 1 in
 let typeEnv = input_type_check progEnv in
 let _ = typeProg typeEnv parsedProg in
 let () = print_string "Program-a Type Checked\nOutput:"; print_newline() in
-let result = eval progEnv parsedProg in
+let _ = eval progEnv parsedProg in
 (*let () = print_string "Program Evaluated using big step semantics to ==> "; print_res result; print_newline() in*)
 let () = print_string "But thees ees-a just a concept"; print_newline() in
 flush stdout
