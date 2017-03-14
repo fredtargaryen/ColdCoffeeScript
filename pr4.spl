@@ -1,8 +1,4 @@
 string NEXTELEMENT = ":";
 set ASTAR = {};
 int I = 0;
-while I < K do
-	ASTAR = ASTAR union {NEXTELEMENT};
-	NEXTELEMENT = NEXTELEMENT + "a";
-end;
-display (L1 concat ASTAR) K;
+NEXTELEMENT = NEXTELEMENT + "a";

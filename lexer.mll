@@ -6,9 +6,9 @@ rule main_lex = parse
       [' ' '\t' '\n']     { main_lex lexbuf }     (* skip blanks *)
     | ';'  			{ STMTSEP }
     | ['0'-'9']+ as lxm  { INT(int_of_string lxm) }
+	| 'L'['1'-'9']['0'-'9']* as lxm	{ IDENT(lxm) }
     | ['A'-'Z']+ as lxm  { IDENT(lxm) }
 	| '\"'(['a'-'z']+|':')'\"' as lxm { STRING(lxm) }
-	| 'L'['1'-'9']['0'-'9']* as lxm	{ IDENT(lxm) }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
     | "string"     { STRINGTYPE }

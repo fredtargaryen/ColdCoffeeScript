@@ -38,7 +38,7 @@ statements:
 
 statement:
   | coffeetype IDENT ASSIGN expr { TmAssign ($1, $2, $4) }
-  | TRUE { TmBool true } /* Added for testing purposes so there is a "statement" you can put in if/while */
+  | IDENT ASSIGN expr { TmReAssign ($1, $3) }
   | IF expr DO statements ELSE statements END { TmIfElse ($2, $4, $6) }
   | IF expr DO statements END { TmIf ($2, $4) }
   | WHILE expr DO statements END { TmWhile ($2, $4) }
@@ -60,7 +60,7 @@ strings:
 ;;
 
 expr:
-  /*  TRUE							{ TmBool true } */ /* Temporarily moved to statement for testing */
+    TRUE							{ TmBool true }
   | FALSE							{ TmBool false }
   | expr EQUALTO expr 				{ TmEqualTo ($1, $3) }  
   | INT								{ TmInt $1 }
