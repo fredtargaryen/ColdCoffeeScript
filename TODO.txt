@@ -1,2 +1,4 @@
 -Assignment
--Way to access parameters L0, ..., Ln and K
+-Do we take inputs before type checking?
+--If yes, we good because I can typecheck the parameters
+--If no, we still good but I have to hack the typechecker to assume the type of the parameters

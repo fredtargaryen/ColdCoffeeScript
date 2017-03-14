@@ -4,6 +4,7 @@ exception StuckTerm;;
 exception SomeWeirdType;;
 
 open Language
+open Str
 
 (* Language Types *)
 type coffeeType = BoolType | IntType | StringType | SetType | VoidType
@@ -65,6 +66,7 @@ let addBinding env str thing = match env with
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
 		
 (* Type Checker *) 
+(* Hacked a little bit: hasn't received inputs yet so K is assumed int and Ln is assumed set*)
 let rec typeOf env e = match e with 
     TmProgram (l) -> 
 		(match l with
@@ -112,7 +114,9 @@ let rec typeOf env e = match e with
             IntType, IntType -> IntType
             | _ -> raise TypeError)
   | TmString (s) -> StringType
-  | TmVar (v) ->  (try lookup env v with LookupError -> raise TypeError)
+  | TmVar (v) ->	if (v == "K") then IntType
+					else
+						if(try lookup env v with LookupError -> raise TypeError)
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), e2 with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
@@ -133,10 +137,6 @@ let rec typeOf env e = match e with
 		(match (typeOf env b), v1, v2 with 
 			BoolType, h1 :: t1, h2 :: t2 ->
 				(if (typeOf env (TmProgram v1) == VoidType) && (typeOf env (TmProgram v2) == VoidType) then VoidType else raise TypeError)
-				(*(let returnType = (typeOf env (TmProgram v1)) in
-					(match (typeOf env (TmProgram v2)) with
-						returnType -> returnType
-					  | _ -> raise TypeError))*)
 		  | _ -> raise TypeError)
   | TmUnion (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with

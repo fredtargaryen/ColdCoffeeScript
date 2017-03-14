@@ -1,1 +1,1 @@
-display ({"a"} concat {":", "a", "b", "c", "ad"}) 5;
+display ({"a"} concat L1) K;

@@ -27,15 +27,15 @@ let rec get_lists i =
 			(*Probably a set. Check against set_regexp*)
 			(if (string_match set_regexp next_line 0) then 
 				(*L1 to Ln are the input sets*) (*Split the words up using commas; convert resulting list to set*) (*Join tuple of the two to recursive call*)
-				("L"^(string_of_int i), (of_list_input (split (regexp ",") next_line))) :: get_lists (i + 1)
+				("L"^(string_of_int i), TmSet (of_list_input (split (regexp ",") next_line))) :: get_lists (i + 1)
 			else
 				(*Probably the int K. Try converting to int*)
 				let k = int_of_string next_line in
 					(if (k < 0) 
 						then raise IDoNotUnderstandAWhatAYouAreASaying "k ees-a too smol. Must be at-a least tsero."
-					else [("K", k)]))
+					else [("K", TmInt k)]))
 		(*Not a valid set or int*)
-with Failure -> raise IDoNotUnderstandAWhatAYouAreASaying "You 'ave not-a formatted-a your input correctly.";;
+		with Failure "int_of_string" -> raise IDoNotUnderstandAWhatAYouAreASaying "You 'ave not-a formatted-a your input correctly.";;
 						
 let progFile = ref stdin in
 let setProg p = progFile := open_in p in
