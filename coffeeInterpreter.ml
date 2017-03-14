@@ -287,7 +287,7 @@ let rec bigEval env e = match e with
 								  | _ -> raise StuckTerm)
 ;;
 
-let eval e = bigEval (Env[]) e;;
+let eval initialEnv e = bigEval (Env initialEnv) e;;
 
 (*PRINTING FINAL VALUE*)
 let print_res res = match res with
