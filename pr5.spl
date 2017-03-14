@@ -1,0 +1,2 @@
+set THESET = {"aa","ab","ac","ba","bb","bc","ca","cb","cc"};
+display (L1 concat THESET) K;

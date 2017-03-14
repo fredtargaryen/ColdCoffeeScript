@@ -114,9 +114,7 @@ let rec typeOf env e = match e with
             IntType, IntType -> IntType
             | _ -> raise TypeError)
   | TmString (s) -> StringType
-  | TmVar (v) ->	(if (v == "K") then IntType
-					else
-						try lookup env v with LookupError -> raise SomeWeirdType)
+  | TmVar (v) -> lookup env v
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), e2 with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
@@ -164,7 +162,7 @@ let rec typeOf env e = match e with
 			| _ -> raise TypeError)
 ;;
 
-let typeProg e = typeOf (Env []) e ;;
+let typeProg typeEnv e = typeOf (Env typeEnv) e ;;
 
 (*Evaluator*)
 
@@ -181,7 +179,7 @@ let rec bigEval env e = match e with
 		(match sl with
 			[] -> e
 		  | h :: t -> let _ = bigEval env h in bigEval env (TmProgram t))
-  | TmVar(x) -> raise StuckTerm 
+  | TmVar(x) -> lookup env x
   | e when (isValue(e)) -> e
   | TmAssign (varType, var, value) -> let v1 = bigEval env value in
 										(addBinding env var v1); e

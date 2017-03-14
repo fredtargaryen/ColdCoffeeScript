@@ -1,0 +1,2 @@
+display (L1 union L2) K;
+display (L1 union L3) K;
