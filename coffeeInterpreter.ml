@@ -114,9 +114,9 @@ let rec typeOf env e = match e with
             IntType, IntType -> IntType
             | _ -> raise TypeError)
   | TmString (s) -> StringType
-  | TmVar (v) ->	if (v == "K") then IntType
+  | TmVar (v) ->	(if (v == "K") then IntType
 					else
-						if(try lookup env v with LookupError -> raise TypeError)
+						try lookup env v with LookupError -> raise SomeWeirdType)
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), e2 with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
