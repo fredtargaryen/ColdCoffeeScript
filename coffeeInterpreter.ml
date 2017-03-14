@@ -71,7 +71,7 @@ let rec typeOf env e = match e with
     TmProgram (l) -> 
 		(match l with
 			[] -> VoidType
-			| hd :: tl -> let _ = (typeOf env hd) in (typeOf env (TmProgram tl))
+			| hd :: tl -> let f = env in let _ = (typeOf f hd) in (typeOf f (TmProgram tl))
 			| _ -> raise TypeError)
   | TmBool (b) -> BoolType
   | TmEqualTo (e1, e2) -> BoolType
@@ -116,7 +116,7 @@ let rec typeOf env e = match e with
   | TmString (s) -> StringType
   | TmVar (v) ->	(if (v == "K") then IntType
 					else
-						try lookup env v with LookupError -> raise TypeErrp)
+						try lookup env v with LookupError -> raise TypeError)
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), e2 with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
