@@ -15,7 +15,7 @@ let parseProgram c =
 			(*Parse the result of lexing lexbuf*)
             main main_lex lexbuf 
     with Parsing.Parse_error -> failwith "Parse failure!";;
-
+	
 (*A set can be the empty set {}, or have at least one word separated with a ,*)
 let set_regexp = regexp "{}\\|{\\(\\(:\\|\\([a-z]+\\)\\),\\)*\\(:\\|[a-z]+\\)}";;
 

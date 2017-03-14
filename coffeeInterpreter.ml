@@ -71,7 +71,7 @@ let rec typeOf env e = match e with
     TmProgram (l) -> 
 		(match l with
 			[] -> VoidType
-			| hd :: tl -> let _ = (typeOf env hd) in (typeOf env (TmProgram tl))
+			| hd :: tl -> let f = env in let _ = (typeOf f hd) in (typeOf f (TmProgram tl))
 			| _ -> raise TypeError)
   | TmBool (b) -> BoolType
   | TmEqualTo (e1, e2) -> BoolType
