@@ -22,7 +22,7 @@ let set_regexp = regexp ("^{}$|^{(" ^ word_regexp_str ^ ",)*(" ^ word_regexp_str
 
 let rec get_lists i = 
 	(*Read the next line from stdin*)
-	let next_line = read_line in
+	let next_line = read_line () in
 		try
 			(*Probably a set. Check against set_regexp*)
 			(if (string_match set_regexp next_line 0) then 
@@ -30,12 +30,12 @@ let rec get_lists i =
 				("L"^(string_of_int i), (of_list_input (split (regexp ",") next_line))) :: get_lists (i + 1)
 			else
 				(*Probably the int K. Try converting to int*)
-				let k = int_of_string k_maybe in
+				let k = int_of_string next_line in
 					(if (k < 0) 
 						then raise IDoNotUnderstandAWhatAYouAreASaying "k ees-a too smol. Must be at-a least tsero."
 					else [("K", k)]))
 		(*Not a valid set or int*)
-		with Failure -> raise IDoNotUnderstandAWhatAYouAreASaying "You 'ave not-a formatted-a your input correctly.";;
+with Failure -> raise IDoNotUnderstandAWhatAYouAreASaying "You 'ave not-a formatted-a your input correctly.";;
 						
 let progFile = ref stdin in
 let setProg p = progFile := open_in p in
