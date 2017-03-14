@@ -2,6 +2,8 @@ exception LookupError;;
 exception TypeError;;
 exception StuckTerm;;
 exception SomeWeirdType;;
+exception YouAreATryingToAssignToAnUndeclaredVariable;;
+exception YouAreATryingToAssignATheWrongType;;
 
 open Language
 open Str
@@ -19,6 +21,7 @@ type coffeeTerm =
 	| TmSet of Language.t
 	| TmVar of string
 	| TmAssign of coffeeType * string * coffeeTerm 
+	| TmReAssign of string * coffeeTerm
 	| TmLessThan of coffeeTerm * coffeeTerm
 	| TmGreaterThan of coffeeTerm * coffeeTerm
 	| TmEqualTo of coffeeTerm * coffeeTerm
@@ -59,14 +62,14 @@ let rec lookup env str = match !env with
 ;;
 
 (* Function to add an extra entry in to an environment *)
-let addBinding env str thing = match !env with 
+let addBinding env str thing = 
+	match !env with 
       Env(gs) -> env := Env ( (str, thing) :: gs ); env ;;
 	  
 	  
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
 		
 (* Type Checker *) 
-(* Hacked a little bit: hasn't received inputs yet so K is assumed int and Ln is assumed set*)
 let rec typeOf env e = match e with 
     TmProgram (l) -> 
 		(match l with
@@ -126,6 +129,11 @@ let rec typeOf env e = match e with
 			(match (type1 = varType) with
 				true -> type1
 			  | false -> raise TypeError))
+  | TmReAssign (var, value) -> 
+		(let type1 = (lookup env var) in
+			match ((typeOf env value) = type1) with
+				true -> type1
+			  | false -> raise YouAreATryingToAssignATheWrongType)
   | TmIf (b, v1) -> 
   		(match (typeOf env b), v1 with
   			BoolType, h1 :: t1 ->
@@ -183,6 +191,8 @@ let rec bigEval env e = match e with
   | e when (isValue(e)) -> e
   | TmAssign (varType, var, value) -> let v1 = bigEval env value in
 										(addBinding env var v1); e
+  | TmReAssign (var, value) -> let v1 = bigEval env value in
+										(addBinding env var v1); e
 (*EQUALITY*)
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
@@ -221,7 +231,7 @@ let rec bigEval env e = match e with
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 + i2) 
-							  | (TmString(s1), TmString(s2)) -> TmString(s1 ^ s2)
+							  | (TmString(s1), TmString(s2)) -> TmString(CoffeeString.stringConcat s1 s2)
 							  | _ -> raise StuckTerm)
   | TmMinus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in

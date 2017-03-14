@@ -37,12 +37,12 @@ statements:
 ;
 
 statement:
-  | coffeetype IDENT ASSIGN expr { TmAssign ($1, $2, $4) }
-  | IDENT ASSIGN expr { TmReAssign ($1, $3) }
-  | IF expr DO statements ELSE statements END { TmIfElse ($2, $4, $6) }
-  | IF expr DO statements END { TmIf ($2, $4) }
-  | WHILE expr DO statements END { TmWhile ($2, $4) }
-  | DISPLAY expr expr				{ TmDisplay ($2, $3) }
+  | coffeetype IDENT ASSIGN expr 				{ TmAssign ($1, $2, $4) }
+  | IDENT ASSIGN expr 							{ TmReAssign ($1, $3) }
+  | IF expr DO statements ELSE statements END 	{ TmIfElse ($2, $4, $6) }
+  | IF expr DO statements END 					{ TmIf ($2, $4) }
+  | WHILE expr DO statements END 				{ TmWhile ($2, $4) }
+  | DISPLAY expr expr							{ TmDisplay ($2, $3) }
 ;
 
 coffeetype:

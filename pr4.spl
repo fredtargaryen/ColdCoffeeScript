@@ -1,4 +1,7 @@
-string NEXTELEMENT = ":";
-set ASTAR = {};
+set ASTAR = {":"};
 int I = 0;
-NEXTELEMENT = NEXTELEMENT + "a";
+while I < K do
+ASTAR = ({"a"} concat ASTAR) union {":"};
+I = I + 1;
+end;
+display (L1 concat ASTAR) K;
