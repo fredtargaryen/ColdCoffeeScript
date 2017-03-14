@@ -16,9 +16,9 @@ let parseProgram c =
     with Parsing.Parse_error -> failwith "Parse failure!";;
 
 (*A string can be : or at least one character a-z*)
-let word_regexp_str = ":|['a'-'z']+";;
+let word_regexp_str = "['a'-'z']";;
 (*A set can be the empty set {}, or have at least one word separated with a ,*)
-let set_regexp = regexp ("^{}$|^{(" ^ word_regexp_str ^ ",)*(" ^ word_regexp_str ^ ")}$");;
+let set_regexp = regexp "{}\|{\(\([a-z]\)\|\([a-z],\)*\)+}";;
 
 let rec get_lists i = 
 	(*Read the next line from stdin*)
