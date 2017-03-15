@@ -23,8 +23,8 @@
 %left TIMES DIV NOT        /* medium precedence */
 %nonassoc UMINUS        /* highest precedence */
 %start main             /* the entry point */
-%type <Coffeeinterpreter.coffeeTerm> main
-%type <Coffeeinterpreter.coffeeType> coffeetype
+%type <CoffeeInterpreter.coffeeTerm> main
+%type <CoffeeInterpreter.coffeeType> coffeetype
 %%
 main:
    	statements EOF					  { TmProgram $1 }
