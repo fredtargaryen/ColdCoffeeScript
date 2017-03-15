@@ -20,8 +20,8 @@ let parseProgram c =
 let set_regexp = regexp "{}\\|{\\(\\(:\\|\\([a-z]+\\)\\),\\)*\\(:\\|[a-z]+\\)}";;
 
 let rec get_lists i = 
-	(*Read the next line from stdin*)
-	let next_line = read_line () in
+	(*Read the next line from stdin. Ignore whitespace*)
+	let next_line = Str.global_replace (regexp "\t\\| ") "" (read_line ()) in
 		try
 			(*Probably a set. Check against set_regexp*)
 			(if (string_match set_regexp next_line 0) then 
