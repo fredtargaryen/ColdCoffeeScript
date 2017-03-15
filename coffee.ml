@@ -61,12 +61,12 @@ let setProg p = progFile := open_in p in
 let usage = "./main PROGRAM_FILE" in
 parse [] setProg usage ; 
 let parsedProg = parseProgram !progFile in
-let () = print_string "Program-a Parsed. Give-a me your inputs"; print_newline() in
+let () = print_newline() in
 let progEnv = get_lists 1 in
 let typeEnv = input_type_check progEnv in
 let _ = typeProg typeEnv parsedProg in
-let () = print_string "Program-a Type Checked\nOutput:"; print_newline() in
+let () = print_newline() in
 let _ = eval progEnv parsedProg in
 (*let () = print_string "Program Evaluated using big step semantics to ==> "; print_res result; print_newline() in*)
-let () = print_string "But thees ees-a just a concept"; print_newline() in
+let () = print_newline() in
 flush stdout
