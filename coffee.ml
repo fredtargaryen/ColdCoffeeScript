@@ -4,7 +4,7 @@ exception KEesATuSmol;;
 
 open Lexer
 open Parser
-open Coffeeinterpreter
+open CoffeeInterpreter
 open Language
 open Arg
 open Str

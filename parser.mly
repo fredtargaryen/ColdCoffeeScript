@@ -1,6 +1,6 @@
 /* File parser.mly */
 %{
-	open Coffeeinterpreter
+	open CoffeeInterpreter
 %}
 
 %token <int> INT
