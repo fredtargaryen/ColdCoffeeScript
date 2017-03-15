@@ -1,2 +1,7 @@
 -Putting variables in set literals
 -Remove whitespace from sets in input checking
+-Add support for single line comments
+-Fix Precendence
+-Translate language into coffee related vocabulary
+-Write informative error outputs
+-Check compatibility with linux systems
