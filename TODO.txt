@@ -1,6 +1,5 @@
 -Putting variables in set literals
 -Fix Precendence
 -Write informative error outputs
-	- wrong types -> output expected type
 	- Stuckterm -> Maybe say what the error is if possible
 	- Missing semi colons?
