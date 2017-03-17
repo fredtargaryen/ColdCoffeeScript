@@ -1,9 +1,6 @@
 exception LookupError;;
-exception TypeError;;
-exception StuckTerm;;
-exception SomeWeirdType;;
-exception YouAreATryingToAssignToAnUndeclaredVariable;;
-exception YouAreATryingToAssignATheWrongType;;
+exception DecafError of string;;
+exception ColdCoffeeError;;
 
 open Language
 open Str
@@ -69,7 +66,9 @@ let addBinding env str thing =
 let addBinding_unit env str thing = 
 	match !env with 
       Env(gs) -> env := Env ( (str, thing) :: gs ); ();;
-	  
+
+(* END OF TERRIFYING ENVIRONMENT STUFF *)
+
 (*Convert a type to a string representation*)	
 let typeToString t = 
 	match t with
@@ -79,8 +78,17 @@ let typeToString t =
 		| SetType -> "set"
 		| VoidType -> "void"   		
 	;;
+	
+(*Ways to fail*)
+let decaf1 e1 r1 = 
+	raise (DecafError ("What is 'appening? I ordered a "^typeToString e1^" but I received a "^typeToString r1^"!"));;
 
-(* END OF TERRIFYING ENVIRONMENT STUFF *)
+let decaf2 e1 e2 r1 r2 = 
+	raise (DecafError ("What is 'appening? I ordered a "^typeToString e1^" and a "^typeToString e2^" but I received a "^typeToString r1^" and a "^typeToString r2^"!"));;
+	
+let decaf3 e1 e2 e3 r1 r2 r3 = 
+	raise (DecafError ("What is 'appening? I ordered a "^typeToString e1^", a "^typeToString e2^" and a "^typeToString e3^", but I received a "^typeToString r1^
+						", a "^typeToString r2^" and a "^typeToString r3^"!"));;
 		
 (* Type Checker *) 
 let rec typeOf env e = match e with 
@@ -94,92 +102,95 @@ let rec typeOf env e = match e with
   | TmGreaterThan (e1, e2) ->
 		(match (typeOf env e1), (typeOf env e2) with
 			IntType, IntType -> BoolType
-			| _ -> raise TypeError)
+			| i, j -> decaf2 i j IntType IntType)
   | TmLessThan (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
 			IntType, IntType -> BoolType
-			| _ -> raise TypeError)
+			| i, j -> decaf2 i j IntType IntType)
   | TmNot (e1) ->
 		(match (typeOf env e1) with
 			BoolType -> BoolType
-			| _ -> raise TypeError)
+			| t -> decaf1 t BoolType)
   | TmAnd (e1, e2) ->
 		(match (typeOf env e1), (typeOf env e2) with
 			BoolType, BoolType -> BoolType
-			| _ -> raise TypeError)
+			| i, j -> decaf2 i j BoolType BoolType)
   | TmOr (e1, e2) ->
 		(match (typeOf env e1), (typeOf env e2) with
 			BoolType, BoolType -> BoolType
-			| _ -> raise TypeError)
+			| i, j -> decaf2 i j BoolType BoolType)
   | TmPlus (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
             IntType, IntType -> IntType
 			| StringType, StringType -> StringType
-            |_ -> raise TypeError)
+            | i, j -> raise (DecafError ("What is 'appening? I ordered two ints or two strings, but I received a "^typeToString i^" and a "^typeToString j^"!")))
   | TmMinus (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
             IntType, IntType -> IntType
-            |_ -> raise TypeError)
+            | i, j -> decaf2 i j IntType IntType)
   | TmMult (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
             IntType, IntType -> IntType
-            |_ -> raise TypeError)
+            | i, j -> decaf2 i j IntType IntType)
   | TmDiv (e1, e2) -> 
 		(match (typeOf env e1), (typeOf env e2) with 
             IntType, IntType -> IntType
-            | _ -> raise TypeError)
+            | i, j -> decaf2 i j IntType IntType)
   | TmString (s) -> StringType
   | TmVar (v) -> lookup env v
   | TmWhile (e1, e2) -> 
 		(match (typeOf env e1), e2 with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
-			| _ -> raise TypeError)
+			| i, j -> raise (DecafError ("What is 'appening? I ordered a boolean and a list but I received a "^typeToString i^" and a non-list value!")))
   | TmSet (s) -> SetType 
   | TmSetLiteral (s) -> SetType
   | TmAssign (varType, var, value) -> 
 		(let type1 = typeOf (addBinding env var varType) value in
 			(match (type1 = varType) with
 				true -> type1
-			  | false -> raise TypeError))
+			  | false -> raise (DecafError ("You are trying-a to pour a "^typeToString type1^" into a "^typeToString varType^"!"))))
   | TmReAssign (var, value) -> 
-		(let type1 = (lookup env var) in
-			match ((typeOf env value) = type1) with
-				true -> type1
-			  | false -> raise YouAreATryingToAssignATheWrongType)
+		(let typeVar = (lookup env var) in
+			let typeVal = (typeOf env value) in
+				match (typeVar = typeVal) with
+				true -> typeVar
+			  | false -> raise (DecafError ("You are trying-a to pour a "^typeToString typeVal^" into a "^typeToString typeVar^"!")))
   | TmIf (b, v1) -> 
   		(match (typeOf env b), v1 with
   			BoolType, h1 :: t1 ->
-  				(if(typeOf env (TmProgram v1) == VoidType) then VoidType else raise TypeError)
-  		| _ -> raise TypeError)
+				(let progType = (typeOf env (TmProgram v1)) in
+					(if(progType == VoidType) then VoidType else decaf1 progType VoidType))
+  		| i, j -> raise (DecafError ("What is 'appening? I ordered a bool and a list, but I received a "^typeToString i^" and a non-list value!")))
   | TmIfElse (b, v1, v2) -> 
 		(match (typeOf env b), v1, v2 with 
 			BoolType, h1 :: t1, h2 :: t2 ->
-				(if (typeOf env (TmProgram v1) == VoidType) && (typeOf env (TmProgram v2) == VoidType) then VoidType else raise TypeError)
-		  | _ -> raise TypeError)
+				(if (typeOf env (TmProgram v1) == VoidType) && (typeOf env (TmProgram v2) == VoidType) then VoidType else raise (DecafError 
+					"What is 'appening? I ordered two lists of statements but I did not receive them!"))
+		  | a, b, c -> raise (DecafError ("What is 'appening? I ordered a bool, but I received a "^typeToString a^"!")))
   | TmUnion (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with
 			SetType, SetType -> SetType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b SetType SetType)
   | TmDifference (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with
 			SetType, SetType -> SetType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b SetType SetType)
   | TmConcat (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with
 			SetType, SetType -> SetType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b SetType SetType)
   | TmIntersect (s1, s2) ->
 		(match (typeOf env s1), (typeOf env s2) with
 			SetType, SetType -> SetType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b SetType SetType)
   | TmMemberOf (e, s) -> 
 		(match (typeOf env e), (typeOf env s) with
 			StringType, SetType -> BoolType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b StringType SetType)
   | TmDisplay (s, i) ->
 		(match (typeOf env s), (typeOf env i) with
 			SetType, IntType -> VoidType
-			| _ -> raise TypeError)
+			| a, b -> decaf2 a b SetType IntType)
 ;;
 
 let typeProg typeEnv e = typeOf (ref (Env typeEnv)) e ;;
@@ -207,99 +218,99 @@ let rec bigEval env e = match e with
 										(TmBool (b1), TmBool (b2)) -> TmBool(b1 == b2)
 									  | (TmInt (i1), TmInt (i2)) -> TmBool(i1 == i2)
 									  | (TmString (s1), TmString (s2)) -> TmBool(s1 == s2)
-									  | _ -> raise StuckTerm)
+									  | _ -> raise ColdCoffeeError)
   | TmGreaterThan (e1,e2) -> let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
 									(match (v1,v2) with 
 										(TmInt(i1), TmInt(i2)) -> TmBool(i1 > i2) 
-									  | _ -> raise StuckTerm)									  
+									  | _ -> raise ColdCoffeeError)									  
   | TmLessThan (e1,e2) -> let v1 = bigEval env e1 in 
 							let v2 = bigEval env e2 in
 								(match (v1,v2) with 
 									(TmInt(i1), TmInt(i2)) -> TmBool(i1 < i2) 
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
 (*BOOLEAN SHIT!!!*)
   | TmNot (e1) -> let v1 = bigEval env e1 in
 					(match (v1) with
 						(TmBool b) -> TmBool (not b)
-						| _ -> raise StuckTerm)
+						| _ -> raise ColdCoffeeError)
   | TmAnd (e1, e2) -> let v1 = bigEval env e1 in
 						let v2 = bigEval env e2 in
 							(match (v1, v2) with
 								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 && b2)
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
   | TmOr (e1, e2) -> let v1 = bigEval env e1 in
 						let v2 = bigEval env e2 in
 							(match (v1, v2) with
 								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 || b2)
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
 (*ARITHMETIC (and concatenation)*)
   | TmPlus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 + i2) 
 							  | (TmString(s1), TmString(s2)) -> TmString(CoffeeString.stringConcat s1 s2)
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
   | TmMinus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 - i2) 
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
   | TmMult(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 * i2) 
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
   | TmDiv(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
-							  | _ -> raise StuckTerm)
+							  | _ -> raise ColdCoffeeError)
 (*CONTROL FLOW*)					
   |  TmIf(b,e1) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> e 
-                                          | _ -> raise StuckTerm)		  
+                                          | _ -> raise ColdCoffeeError)		  
   |  TmIfElse(b,e1,e2) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> bigEval env (TmProgram e2) 
-                                          | _ -> raise StuckTerm)
+                                          | _ -> raise ColdCoffeeError)
   | TmWhile(b, p) -> let bv = bigEval env b in (match bv with
 											(TmBool true) -> let _ = bigEval env (TmProgram p) in bigEval env e
 								 		  | (TmBool false) -> e
-										  | _ -> raise StuckTerm)
+										  | _ -> raise ColdCoffeeError)
 (*SET OPERATIONS*)
   | TmSetLiteral (e1) -> TmSet (of_list_program e1)
   | TmUnion (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.union s1 s2)
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
   | TmDifference (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.diff s1 s2)
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
   | TmIntersect (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.inter s1 s2)
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
   | TmMemberOf (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmString el, TmSet s) -> TmBool (Language.mem el s)
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
   | TmConcat (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet (concat s1 s2)
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
   | TmDisplay (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmSet s, TmInt i) -> print_string (display s i); e
-								  | _ -> raise StuckTerm)
+								  | _ -> raise ColdCoffeeError)
 ;;
 
 let eval initialEnv e = bigEval (ref (Env initialEnv)) e;;

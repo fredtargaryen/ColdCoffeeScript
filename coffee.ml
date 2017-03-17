@@ -53,7 +53,7 @@ let rec input_type_check l =
 					TmSet (s) -> (var, SetType) :: input_type_check tail
 				  | TmInt (i) -> [(var, IntType)]
 				  | _ -> raise IDoNotUnderstandAWhatAYouAreASaying)
-	with TypeError -> raise IDoNotUnderstandAWhatAYouAreASaying;;
+	with DecafError _ -> raise IDoNotUnderstandAWhatAYouAreASaying;;
 	  
 	  
 let progFile = ref stdin in

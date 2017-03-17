@@ -37,7 +37,7 @@ statements:
 ;
 
 statement:
-  | coffeetype IDENT ASSIGN expr 				{ print_string("[PARSE]Found assignment\n");TmAssign ($1, $2, $4) }
+  | coffeetype IDENT ASSIGN expr 				{ TmAssign ($1, $2, $4) }
   | IDENT ASSIGN expr 							{ TmReAssign ($1, $3) }
   | IF expr DO statements ELSE statements END 	{ TmIfElse ($2, $4, $6) }
   | IF expr DO statements END 					{ TmIf ($2, $4) }

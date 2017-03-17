@@ -1,4 +1,6 @@
-#-----------------#
-#INITIALIZE SET A #
-#-----------------#
+int I = 0;
+#Test type errors#
+while 4 < "hello" do
+	I = I + 1;
+end;
 display {"this","shit","gets","displayed"} 4; #display %^FIW^&TD*(W (JPA )MXK)_{){<AOP 		I(Y*Y4;#

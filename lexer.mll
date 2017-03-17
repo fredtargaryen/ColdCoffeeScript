@@ -9,10 +9,10 @@ rule main_lex = parse
     | ['0'-'9']+ as lxm  				{ INT(int_of_string lxm) }
 	| 'L'['1'-'9']['0'-'9']* as lxm		{ IDENT(lxm) }
     | ['A'-'Z']+ as lxm  				{ IDENT(lxm) }
-	| '"'(['a'-'z']+|':')'"' as lxm 	{ print_string("[LEX]Found string\n"); STRING(lxm) }
+	| '"'(['a'-'z']+|':')'"' as lxm 	{ STRING(lxm) }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
-    | "string"     { print_string("[LEX]Found STRINGTYPE\n"); STRINGTYPE }
+    | "string"     { STRINGTYPE }
     | "set"        { SETTYPE }
     | '+'          { PLUS }
     | '-'          { MINUS }
@@ -30,7 +30,7 @@ rule main_lex = parse
     | "difference" { DIFFERENCE }
     | "memberOf"   { MEMBEROF }
     | "=="         { EQUALTO }
-    | '='          { print_string("[LEX]Found assignment\n");ASSIGN }
+    | '='          { ASSIGN }
     | "for"        { FOR }
     | "while"      { WHILE }
     | "do"         { DO }
@@ -41,7 +41,7 @@ rule main_lex = parse
 	| "or" 		   { OR }
 	| "not"		   { NOT }
     | eof          { EOF }
-	| '{'		   { print_string("[LEX]Found setstart\n");SETSTART }
-	| '}'		   { print_string("[LEX]Found setend\n");SETEND }
-	| ','		   { print_string("[LEX]Found comma\n");STRINGSEP }
-	| "display"	   { print_string("[LEX]Found display\n");DISPLAY }
+	| '{'		   { SETSTART }
+	| '}'		   { SETEND }
+	| ','		   { STRINGSEP }
+	| "display"	   { DISPLAY }
