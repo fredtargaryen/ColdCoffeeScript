@@ -1,0 +1,4 @@
+###################
+#INITIALIZE SET A #
+###################
+display {"this","shit","gets","displayed"} 4; #display {"this","shit","does","not"} 4;

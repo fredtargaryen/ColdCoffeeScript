@@ -294,10 +294,3 @@ let rec bigEval env e = match e with
 ;;
 
 let eval initialEnv e = bigEval (ref (Env initialEnv)) e;;
-
-(*PRINTING FINAL VALUE*)
-let print_res res = match res with
-    | (TmInt i) -> print_int i ; print_string " : Int" 
-    | (TmBool b) -> print_string (if b then "true" else "false") ; print_string " : Bool"
-    | (TmString s) -> print_string s
-    | _ -> raise SomeWeirdType;; 

@@ -67,6 +67,5 @@ let typeEnv = input_type_check progEnv in
 let _ = typeProg typeEnv parsedProg in
 let () = print_newline() in
 let _ = eval progEnv parsedProg in
-(*let () = print_string "Program Evaluated using big step semantics to ==> "; print_res result; print_newline() in*)
 let () = print_newline() in
 flush stdout

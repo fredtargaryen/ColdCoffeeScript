@@ -3,9 +3,9 @@
 	open CoffeeInterpreter
 %}
 
-%token <int> INT
-%token <string> STRING
 %token <string> IDENT
+%token <string> STRING
+%token <int> INT
 %token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
 %token PLUS MINUS TIMES DIV
 %token NOT AND OR
@@ -19,9 +19,10 @@
 %token DISPLAY
 %token SETSTART SETEND STRINGSEP
 %left ASSIGN EQUALTO GREATERTHAN LESSTHAN OR/* lowest precedence */
+%left STRINGSEP
 %left PLUS MINUS AND 
 %left TIMES DIV NOT        /* medium precedence */
-%nonassoc UMINUS        /* highest precedence */
+%nonassoc IDENT        /* highest precedence */
 %start main             /* the entry point */
 %type <CoffeeInterpreter.coffeeTerm> main
 %type <CoffeeInterpreter.coffeeType> coffeetype
@@ -36,7 +37,7 @@ statements:
 ;
 
 statement:
-  | coffeetype IDENT ASSIGN expr 				{ TmAssign ($1, $2, $4) }
+  | coffeetype IDENT ASSIGN expr 				{ print_string("[PARSE]Found assignment\n");TmAssign ($1, $2, $4) }
   | IDENT ASSIGN expr 							{ TmReAssign ($1, $3) }
   | IF expr DO statements ELSE statements END 	{ TmIfElse ($2, $4, $6) }
   | IF expr DO statements END 					{ TmIf ($2, $4) }
@@ -52,11 +53,10 @@ coffeetype:
   | VOIDTYPE	{ VoidType }
 ;
 
-strings:
-								{ [] }
-  | STRING						{ [$1] }
-  | STRING STRINGSEP strings	{ $1 :: $3 }
-;;
+set_terms:
+    STRING						{ [$1] }
+  | STRING STRINGSEP set_terms	{ $1 :: $3 }
+;
 
 expr:
     TRUE							{ TmBool true }
@@ -69,9 +69,10 @@ expr:
   | expr MINUS expr     	    	{ TmMinus ($1, $3) }
   | expr TIMES expr         		{ TmMult ($1, $3) }
   | expr DIV expr           		{ TmDiv ($1, $3) }
-  | STRING							{ TmString $1 }
+  | STRING							{ TmString (String.sub $1 1 (String.length $1 - 2)) }
   |	IDENT							{ TmVar $1 }
-  | SETSTART strings SETEND			{ TmSetLiteral $2 }
+  | SETSTART SETEND					{ TmSetLiteral [] }
+  | SETSTART set_terms SETEND		{ TmSetLiteral $2 }
   | LPAREN expr RPAREN      		{ $2 } 
   | NOT expr						{ TmNot $2 }
   | expr AND expr 					{ TmAnd ($1, $3) }
@@ -81,5 +82,4 @@ expr:
   | expr CONCAT expr				{ TmConcat ($1, $3) }
   | expr DIFFERENCE expr 			{ TmDifference ($1, $3) }
   | expr MEMBEROF expr				{ TmMemberOf ($1, $3) }
-/* | MINUS expr %prec UMINUS 		{ TmInt (- $2) } 	*/
 ;

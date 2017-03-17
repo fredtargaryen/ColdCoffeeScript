@@ -3,15 +3,16 @@
 open Parser        (* The type main_lex is defined in parser.mli *)
 }
 rule main_lex = parse
-      [' ' '\t' '\n']     { main_lex lexbuf }     (* skip blanks *)
-    | ';'  			{ STMTSEP }
-    | ['0'-'9']+ as lxm  { INT(int_of_string lxm) }
-	| 'L'['1'-'9']['0'-'9']* as lxm	{ IDENT(lxm) }
-    | ['A'-'Z']+ as lxm  { IDENT(lxm) }
-	| '\"'(['a'-'z']+|':')'\"' as lxm { STRING(lxm) }
+	  '#'['0'-'9' 'a'-'z' ' ' '\t' 'A'-'Z' '#' ';' '"' '+' '-' '*' '/' '(' ')' '<' '>' '=' '{' '}' ',']*['\n']	{ main_lex lexbuf } (*Skip comments*)
+    | [' ' '\t' '\n']    				{ main_lex lexbuf }
+    | ';'  								{ STMTSEP }
+    | ['0'-'9']+ as lxm  				{ INT(int_of_string lxm) }
+	| 'L'['1'-'9']['0'-'9']* as lxm		{ IDENT(lxm) }
+    | ['A'-'Z']+ as lxm  				{ IDENT(lxm) }
+	| '"'(['a'-'z']+|':')'"' as lxm 	{ print_string("[LEX]Found string\n"); STRING(lxm) }
     | "bool"       { BOOLTYPE }
     | "int"        { INTTYPE }
-    | "string"     { STRINGTYPE }
+    | "string"     { print_string("[LEX]Found STRINGTYPE\n"); STRINGTYPE }
     | "set"        { SETTYPE }
     | '+'          { PLUS }
     | '-'          { MINUS }
@@ -29,7 +30,7 @@ rule main_lex = parse
     | "difference" { DIFFERENCE }
     | "memberOf"   { MEMBEROF }
     | "=="         { EQUALTO }
-    | '='          { ASSIGN }
+    | '='          { print_string("[LEX]Found assignment\n");ASSIGN }
     | "for"        { FOR }
     | "while"      { WHILE }
     | "do"         { DO }
@@ -40,7 +41,7 @@ rule main_lex = parse
 	| "or" 		   { OR }
 	| "not"		   { NOT }
     | eof          { EOF }
-	| '{'		   { SETSTART }
-	| '}'		   { SETEND }
-	| ','		   { STRINGSEP }
-	| "display"	   { DISPLAY }
+	| '{'		   { print_string("[LEX]Found setstart\n");SETSTART }
+	| '}'		   { print_string("[LEX]Found setend\n");SETEND }
+	| ','		   { print_string("[LEX]Found comma\n");STRINGSEP }
+	| "display"	   { print_string("[LEX]Found display\n");DISPLAY }
