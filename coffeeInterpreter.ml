@@ -64,7 +64,11 @@ let rec lookup env str = match !env with
 (* Function to add an extra entry in to an environment *)
 let addBinding env str thing = 
 	match !env with 
-      Env(gs) -> env := Env ( (str, thing) :: gs ); env ;;
+      Env(gs) -> env := Env ( (str, thing) :: gs ); env;;
+	  
+let addBinding_unit env str thing = 
+	match !env with 
+      Env(gs) -> env := Env ( (str, thing) :: gs ); ();;
 	  
 	  
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
@@ -74,8 +78,7 @@ let rec typeOf env e = match e with
     TmProgram (l) -> 
 		(match l with
 			[] -> VoidType
-			| hd :: tl -> let f = env in let _ = (typeOf f hd) in (typeOf f (TmProgram tl))
-			| _ -> raise TypeError)
+			| hd :: tl -> let f = env in let _ = (typeOf f hd) in (typeOf f (TmProgram tl)))
   | TmBool (b) -> BoolType
   | TmEqualTo (e1, e2) -> BoolType
   | TmInt (i) -> IntType
@@ -174,25 +177,20 @@ let typeProg typeEnv e = typeOf (ref (Env typeEnv)) e ;;
 
 (*Evaluator*)
 
-let rec isValue e = match e with 
-  | TmInt(i) -> true
-  | TmBool(b) -> true 
-  | TmSet(s) -> true
-  | TmString(s) -> true
-  | _ -> false 
-;;
-
 let rec bigEval env e = match e with 
 	TmProgram (sl) -> 
 		(match sl with
 			[] -> e
 		  | h :: t -> let _ = bigEval env h in bigEval env (TmProgram t))
   | TmVar(x) -> lookup env x
-  | e when (isValue(e)) -> e
+  | TmInt(i) -> e
+  | TmBool(b) -> e
+  | TmString(s) -> e
+  | TmSet(s) -> e
   | TmAssign (varType, var, value) -> let v1 = bigEval env value in
-										(addBinding env var v1); e
+										(addBinding_unit env var v1); e
   | TmReAssign (var, value) -> let v1 = bigEval env value in
-										(addBinding env var v1); e
+										(addBinding_unit env var v1); e
 (*EQUALITY*)
   | TmEqualTo (e1, e2) -> 	let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in

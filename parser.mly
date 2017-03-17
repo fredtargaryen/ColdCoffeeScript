@@ -32,8 +32,7 @@ main:
 
 statements:
   | { [] } /* empty list to match null */
-  |	statement STMTSEP statements { $1 :: $3 }	
-  | statement STMTSEP { [$1] }
+  |	statement STMTSEP statements { $1 :: $3 }
 ;
 
 statement:
