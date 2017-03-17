@@ -70,7 +70,16 @@ let addBinding_unit env str thing =
 	match !env with 
       Env(gs) -> env := Env ( (str, thing) :: gs ); ();;
 	  
-	  
+(*Convert a type to a string representation*)	
+let typeToString t = 
+	match t with
+		  IntType -> "int"
+		| BoolType -> "bool"
+		| StringType ->	"string"
+		| SetType -> "set"
+		| VoidType -> "void"   		
+	;;
+
 (* END OF TERRIFYING ENVIRONMENT STUFF *)
 		
 (* Type Checker *) 
