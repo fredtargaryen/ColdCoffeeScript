@@ -1,6 +1,6 @@
 exception LookupError;;
 exception DecafError of string;;
-exception ColdCoffeeError;;
+exception ColdCoffeeError of string;;
 
 open Language
 open Str
@@ -203,7 +203,6 @@ let rec typeOf env e = match e with
 let typeProg typeEnv e = typeOf (ref (Env typeEnv)) e ;;
 
 (*Evaluator*)
-
 let rec bigEval env e = match e with 
 	TmProgram (sl) -> 
 		(match sl with
@@ -225,67 +224,67 @@ let rec bigEval env e = match e with
 										(TmBool (b1), TmBool (b2)) -> TmBool(b1 == b2)
 									  | (TmInt (i1), TmInt (i2)) -> TmBool(i1 == i2)
 									  | (TmString (s1), TmString (s2)) -> TmBool(s1 == s2)
-									  | _ -> raise ColdCoffeeError)
+									  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not compare values in equality")))
   | TmGreaterThan (e1,e2) -> let v1 = bigEval env e1 in 
 								let v2 = bigEval env e2 in
 									(match (v1,v2) with 
 										(TmInt(i1), TmInt(i2)) -> TmBool(i1 > i2) 
-									  | _ -> raise ColdCoffeeError)									  
+									  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not compare values in greater than")))									  
   | TmLessThan (e1,e2) -> let v1 = bigEval env e1 in 
 							let v2 = bigEval env e2 in
 								(match (v1,v2) with 
 									(TmInt(i1), TmInt(i2)) -> TmBool(i1 < i2) 
-								  | _ -> raise ColdCoffeeError)
-(*BOOLEAN SHIT!!!*)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not compare values in less than")))
+(*BOOLEANS*)
   | TmNot (e1) -> let v1 = bigEval env e1 in
 					(match (v1) with
 						(TmBool b) -> TmBool (not b)
-						| _ -> raise ColdCoffeeError)
+						| _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not not boolean")))
   | TmAnd (e1, e2) -> let v1 = bigEval env e1 in
 						let v2 = bigEval env e2 in
 							(match (v1, v2) with
 								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 && b2)
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take and of both booleans")))
   | TmOr (e1, e2) -> let v1 = bigEval env e1 in
 						let v2 = bigEval env e2 in
 							(match (v1, v2) with
 								(TmBool (b1)), (TmBool (b2)) -> TmBool(b1 || b2)
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take or of both booleans")))
 (*ARITHMETIC (and concatenation)*)
   | TmPlus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 + i2) 
 							  | (TmString(s1), TmString(s2)) -> TmString(CoffeeString.stringConcat s1 s2)
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not add integer/string to second integer/string")))
   | TmMinus(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 - i2) 
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not substract integer from integer")))
   | TmMult(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 * i2) 
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not multiply integer by integer")))
   | TmDiv(e1,e2) -> let v1 = bigEval env e1 in 
 						let v2 = bigEval env e2 in
                             (match (v1,v2) with 
 								(TmInt(i1), TmInt(i2)) -> TmInt(i1 / i2) 
-							  | _ -> raise ColdCoffeeError)
+							  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not divide integer by integer")))
 (*CONTROL FLOW*)					
   |  TmIf(b,e1) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> e 
-                                          | _ -> raise ColdCoffeeError)		  
+                                          | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not evaluate if statement. Is your boolean conditional correct?")))		  
   |  TmIfElse(b,e1,e2) -> let bv = bigEval env b in (match bv with 
                                             (TmBool true) -> bigEval env (TmProgram e1) 
                                           | (TmBool false) -> bigEval env (TmProgram e2) 
-                                          | _ -> raise ColdCoffeeError)
+                                          | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not eavluate if statement. Is your boolean conditional correct?")))
   | TmWhile(b, p) -> let bv = bigEval env b in (match bv with
 											(TmBool true) -> let _ = bigEval env (TmProgram p) in bigEval env e
 								 		  | (TmBool false) -> e
-										  | _ -> raise ColdCoffeeError)
+										  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not evaluate while statement. Is your boolean conditional correct?")))
 (*SET OPERATIONS*)
 	(*CoffeeTerm list*)
   | TmSetLiteral (e1) -> (match e1 with
@@ -297,37 +296,37 @@ let rec bigEval env e = match e with
 				  |	h :: t, l -> let head = (bigEval env h) in
 								(match head with 
 									TmString(s) -> (bigEval env (TmSetLanguageBuild (t, (Language.add s lang))))
-								  | _ -> raise ColdCoffeeError))
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Invalid set literal"))))
   | TmUnion (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.union s1 s2)
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take union of both sets")))
   | TmDifference (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.diff s1 s2)
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take difference of both sets")))
   | TmIntersect (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet(Language.inter s1 s2)
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take intersection of both sets")))
   | TmMemberOf (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmString el, TmSet s) -> TmBool (Language.mem el s)
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not check if term is member of the set")))
   | TmConcat (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmSet s1, TmSet s2) -> TmSet (concat s1 s2)
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not take concatenation of both sets")))
   | TmDisplay (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
 									(TmSet s, TmInt i) -> print_string (display s i); e
-								  | _ -> raise ColdCoffeeError)
+								  | _ -> raise (ColdCoffeeError ("What isa wrong? Your coffee as gonea cold!: Could not display set")))
 ;;
 
 let eval initialEnv e = bigEval (ref (Env initialEnv)) e;;
