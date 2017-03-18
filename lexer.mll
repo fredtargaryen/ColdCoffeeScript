@@ -2,11 +2,14 @@
 {
 open Parser        (* The type main_lex is defined in parser.mli *)
 
+let lineNum = ref 1
+
 exception SyntaxError of string
 }
 rule main_lex = parse
 	  '#'[^'\n''#']*'#'	{ main_lex lexbuf } (*Skip line comments*)
-    | [' ' '\t' '\n']    				{ main_lex lexbuf } (*Skip blanks*)
+    | [' ' '\t']    				{ main_lex lexbuf } (*Skip blanks*)
+    | '\n'  {incr lineNum; main_lex lexbuf}
     | ';'  								{ STMTSEP }
     | ['0'-'9']+ as lxm  				{ INT(int_of_string lxm) }
 	| 'L'['1'-'9']['0'-'9']* as lxm		{ IDENT(lxm) }
@@ -47,4 +50,4 @@ rule main_lex = parse
 	| '}'		   { SETEND }
 	| ','		   { STRINGSEP }
 	| "display"	   { DISPLAY }
-    | _  { raise (SyntaxError ("Unexpected term: " ^ Lexing.lexeme lexbuf ^ ". Were you trying to order a comment?")) }
+    | _  { raise (SyntaxError ("Unexpected term: " ^ Lexing.lexeme lexbuf ^ " on line: " ^ (string_of_int !lineNum) ^ ". Were you trying to order a comment?")) }
