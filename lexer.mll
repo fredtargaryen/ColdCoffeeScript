@@ -50,4 +50,4 @@ rule main_lex = parse
 	| '}'		   { SETEND }
 	| ','		   { STRINGSEP }
 	| "display"	   { DISPLAY }
-    | _  { raise (SyntaxError ("Unexpected term: " ^ Lexing.lexeme lexbuf ^ " on line: " ^ (string_of_int !lineNum) ^ ". Were you trying to order a comment?")) }
+    | _  { raise (SyntaxError ("Unexpected term: " ^ Lexing.lexeme lexbuf ^ " on line: " ^ (string_of_int !lineNum) ^ ". Make sure that you read-a the textbook carefully.")) }
