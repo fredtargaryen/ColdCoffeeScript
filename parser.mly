@@ -21,8 +21,8 @@
 %left ASSIGN EQUALTO GREATERTHAN LESSTHAN OR/* lowest precedence */
 %left STRINGSEP
 %left PLUS MINUS AND 
-%left TIMES DIV NOT        /* medium precedence */
-%nonassoc IDENT        /* highest precedence */
+%left TIMES DIV        /* medium precedence */
+%nonassoc IDENT NOT       /* highest precedence */
 %start main             /* the entry point */
 %type <CoffeeInterpreter.coffeeTerm> main
 %type <CoffeeInterpreter.coffeeType> coffeetype
