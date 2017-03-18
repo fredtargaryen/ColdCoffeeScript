@@ -1,6 +1,8 @@
 (* File lexer.mll *)
 {
 open Parser        (* The type main_lex is defined in parser.mli *)
+
+exception SyntaxError of string
 }
 rule main_lex = parse
 	  '#'[^'\n''#']*'#'	{ main_lex lexbuf } (*Skip line comments*)
@@ -45,3 +47,4 @@ rule main_lex = parse
 	| '}'		   { SETEND }
 	| ','		   { STRINGSEP }
 	| "display"	   { DISPLAY }
+    | _  { raise (SyntaxError ("Unexpected term: " ^ Lexing.lexeme lexbuf ^ ". Were you trying to order a comment?")) }
