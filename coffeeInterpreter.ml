@@ -14,7 +14,8 @@ type coffeeTerm =
 	| TmInt of int 
 	| TmBool of bool 
 	| TmString of string 
-	| TmSetLiteral of string list
+	| TmSetLiteral of coffeeTerm list
+	| TmSetLanguageBuild of coffeeTerm list * Language.t
 	| TmSet of Language.t
 	| TmVar of string
 	| TmAssign of coffeeType * string * coffeeTerm 
@@ -143,7 +144,13 @@ let rec typeOf env e = match e with
 			BoolType, hd :: tl -> (typeOf env (TmProgram e2))
 			| i, j -> raise (DecafError ("What is 'appening? I ordered a boolean and a list but I received a "^typeToString i^" and a non-list value!")))
   | TmSet (s) -> SetType 
-  | TmSetLiteral (s) -> SetType
+  | TmSetLiteral (s) -> 
+						(match s with
+							[] -> SetType
+						  | h :: t -> (match (typeOf env h) with
+										StringType -> (typeOf env (TmSetLiteral t))
+									  | _ -> raise (DecafError ("What is 'appening? You are trying-a to pour a non-string into a new set!"))))
+  | TmSetLanguageBuild _ -> VoidType (*Not used in type checker*)
   | TmAssign (varType, var, value) -> 
 		(let type1 = typeOf (addBinding env var varType) value in
 			(match (type1 = varType) with
@@ -280,7 +287,17 @@ let rec bigEval env e = match e with
 								 		  | (TmBool false) -> e
 										  | _ -> raise ColdCoffeeError)
 (*SET OPERATIONS*)
-  | TmSetLiteral (e1) -> TmSet (of_list_program e1)
+	(*CoffeeTerm list*)
+  | TmSetLiteral (e1) -> (match e1 with
+							[] -> TmSet Language.empty
+						  | h :: t -> (bigEval env (TmSetLanguageBuild (e1, Language.empty))))
+  | TmSetLanguageBuild (exps, lang) -> 
+				(match (exps, lang) with
+					[], l -> TmSet lang
+				  |	h :: t, l -> let head = (bigEval env h) in
+								(match head with 
+									TmString(s) -> (bigEval env (TmSetLanguageBuild (t, (Language.add s lang))))
+								  | _ -> raise ColdCoffeeError))
   | TmUnion (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in 
 								(match (v1, v2) with

@@ -1,5 +1,3 @@
--Putting variables in set literals
 -Fix Precendence
 -Write informative error outputs
 	- Stuckterm -> Maybe say what the error is if possible
-	- Missing semi colons?

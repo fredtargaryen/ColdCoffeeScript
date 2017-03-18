@@ -54,8 +54,8 @@ coffeetype:
 ;
 
 set_terms:
-    STRING						{ [$1] }
-  | STRING STRINGSEP set_terms	{ $1 :: $3 }
+    expr						{ [$1] }
+  | expr STRINGSEP set_terms	{ $1 :: $3 }
 ;
 
 expr:
