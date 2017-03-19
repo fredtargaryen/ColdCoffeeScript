@@ -325,7 +325,9 @@ let rec bigEval env e = match e with
   | TmDisplay (e1, e2) -> let v1 = bigEval env e1 in
 							let v2 = bigEval env e2 in
 								(match (v1, v2) with
-									(TmSet s, TmInt i) -> print_string (display s i); e
+									(TmSet s, TmInt i) -> 
+										(if i < 0 then (raise (ColdCoffeeError ("What is-a wrong? Your coffee 'as gone-a cold!: I cannot display "^(string_of_int i)^" elements!")))
+										else print_string (display s i); e)
 								  | _ -> raise (ColdCoffeeError ("What is-a wrong? Your coffee 'as gone-a cold!: Could not display set")))
 ;;
 

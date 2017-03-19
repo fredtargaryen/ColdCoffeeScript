@@ -1,6 +1,6 @@
 (* File coffee.ml *)
-exception IDoNotUnderstandAWhatAYouAreASaying;;
-exception KEesATuSmol;;
+exception IDoNotUnderstandAWhatAYouAreASayingError of string;;
+exception KEesATuSmolError of string;;
 
 open Lexer
 open Parser
@@ -39,10 +39,10 @@ let rec get_lists i =
 				(*Probably the int K. Try converting to int*)
 				let k = int_of_string next_line in
 					(if (k < 0) 
-						then raise KEesATuSmol
+						then raise (KEesATuSmolError ("'"^next_line^"' ees-a tu smol! Your integer must-a be tsero or more."))
 					else [("K", TmInt k)]))
 		(*Not a valid set or int*)
-		with Failure "int_of_string" -> raise IDoNotUnderstandAWhatAYouAreASaying;;
+		with Failure "int_of_string" -> raise (IDoNotUnderstandAWhatAYouAreASayingError ("'"^next_line^"' does-a not look like a set or an integer.\nExample set: {gennaro,:,abc}\nExample integer: 26"));;
 						
 let rec input_type_check l =
 	try
@@ -52,8 +52,8 @@ let rec input_type_check l =
 				(match term with 
 					TmSet (s) -> (var, SetType) :: input_type_check tail
 				  | TmInt (i) -> [(var, IntType)]
-				  | _ -> raise IDoNotUnderstandAWhatAYouAreASaying)
-	with DecafError _ -> raise IDoNotUnderstandAWhatAYouAreASaying;;
+				  | _ -> raise (IDoNotUnderstandAWhatAYouAreASayingError ("What you 'ave written does-a not look like a set or an integer.\nExample set: {gennaro,:,abc}\nExample integer: 26")))
+	with DecafError _ -> raise (IDoNotUnderstandAWhatAYouAreASayingError ("What you 'ave written does-a not look like a set or an integer.\nExample set: {gennaro,:,abc}\nExample integer: 26"));;
 	  
 	  
 let progFile = ref stdin in
