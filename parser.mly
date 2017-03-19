@@ -5,25 +5,25 @@
   exception MissingSeperatorError of string
 %}
 
-%token <string> IDENT
+%token <string> IDENT /*types*/
 %token <string> STRING
 %token <int> INT
 %token BOOLTYPE INTTYPE STRINGTYPE SETTYPE VOIDTYPE
-%token PLUS MINUS TIMES DIV
-%token NOT AND OR
-%token LPAREN RPAREN
+%token PLUS MINUS TIMES DIV /*arithmetic*/
+%token NOT AND OR /*logic*/
+%token LPAREN RPAREN /*brackets*/
 %token ASSIGN EQUALTO GREATERTHAN LESSTHAN
 %token TRUE FALSE
-%token UNION INTERSECT CONCAT DIFFERENCE MEMBEROF
-%token FOR WHILE DO END IF ELSE
+%token UNION INTERSECT CONCAT DIFFERENCE MEMBEROF /*Set operations*/
+%token WHILE DO END IF ELSE /*if and while*/
+%token DISPLAY
+%token SETSTART SETEND STRINGSEP/*set literals*/
 %token STMTSEP
 %token EOF
-%token DISPLAY
-%token SETSTART SETEND STRINGSEP
-%left ASSIGN EQUALTO GREATERTHAN LESSTHAN OR/* lowest precedence */
+%left ASSIGN EQUALTO GREATERTHAN LESSTHAN OR MEMBEROF/* lowest precedence */
 %left STRINGSEP
-%left PLUS MINUS AND 
-%left TIMES DIV        /* medium precedence */
+%left PLUS MINUS AND UNION INTERSECT DIFFERENCE
+%left TIMES DIV CONCAT       /* medium precedence */
 %nonassoc IDENT NOT       /* highest precedence */
 %start main             /* the entry point */
 %type <CoffeeInterpreter.coffeeTerm> main

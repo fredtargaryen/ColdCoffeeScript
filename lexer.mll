@@ -36,7 +36,6 @@ rule main_lex = parse
     | "memberOf"   { MEMBEROF }
     | "=="         { EQUALTO }
     | '='          { ASSIGN }
-    | "for"        { FOR }
     | "while"      { WHILE }
     | "do"         { DO }
     | "end"        { END }
