@@ -1,6 +1,8 @@
 /* File parser.mly */
 %{
 	open CoffeeInterpreter
+
+  exception MissingSeperatorError of string
 %}
 
 %token <string> IDENT
@@ -34,6 +36,7 @@ main:
 statements:
   | { [] } /* empty list to match null */
   |	statement STMTSEP statements { $1 :: $3 }
+  | statement {raise (MissingSeperatorError "One of your-a statements is just a concept. Add a semicolon or you will-a fail!")}
 ;
 
 statement:
