@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{listings}
+	
+\author{James Curran and Shahaan Hassan}
+\title{ColdCoffeeScript User Guide}
+
+\begin{document}
+\maketitle
+ColdCoffeeScript, its interpreter and accompanying features, and this User Guide are in no way affiliated with or endorsed by popular University of Southampton lecturer Gennaro Parlato.  
+\tableofcontents % for a table of contents
+
+\section{Introductory Quotes and Haiku}
+\begin{quote}
+\textit{"You can't put that lmao"}
+\end{quote}
+
+ - Shahaan Hassan, 2017
+
+\begin{quote}
+\textit{We have distilled the\\One and only Gennaro\\Into a language\\\\If you want some proof\\that our language is dank, well\\we got 4/20}
+\end{quote}
+
+\section{"Serious" Introduction}
+ColdCoffeeScript is a strongly and statically typed imperative domain-specific language, created for the purpose of manipulating regular languages. The language prides orthogonality over syntactic sugar so the developers have DELIBERATELY AIMED for a minimal syntax. All functions and operators are pass-by-value - variables are only changed when explicitly re-assigned by the programmer.
+
+\section{Features}
+ColdCoffeeScript boasts many organic features, guaranteed to make programming simply delightful. These include:
+\begin{itemize}
+\item Delicious Gennaro-themed error messages, including such choice phrases as "" and "" (we only ever type valid programs so we don't know)
+\item Incredible type checker to whip those unruly variables into shape before they go into the program!
+\item Single line comments - include any old muck in your program by surrounding part of your line with hashes, like so \#Shahaan remember to add more features here\#
+\end{itemize}
+\section{Syntax}
+So, essentially, the idea ees-a, I will give-a you a taybul of the syntax and what eet-a does. Then you can mess around with it for homework.
+
+Nota Bene: Variable names are in capitals only. Thees-a was done deliberately to distinguish variables from functions, and emphasise the importance of good variable naming.
+\subsection{Hello World}
+Thees ees-a the anatomy of a Hello World Program in ColdCoffeeScript.
+\begin{lstlisting}
+display {"hello","world"} 2;
+\end{lstlisting}
+On line 1, 'display' ees-a the function used to output a set to standard output. The output can-a probably be redirected as-a well.
+
+On line 1, '\{"hello","world"\}' ees an exampul of what ees known in ColdCoffeeScript as a set literal. The parentheses show the start and end of the set, and the set contains the two strings "hello" and "world", separated by a comma.
+
+On line 1, '2' ees the number of elements of the set that will be printed. Thees ees-a useful for-a very large sets where you don't care about all of the output.
+
+The semicolon ends the display statement. If you do not end each statement weeth a semicolon, your statement will be just a concept and your DFA will-a fail.
+
+The output of the program is as follows:
+\begin{lstlisting}
+{ciao,mondo}
+\end{lstlisting}
+This is because the language automatically translates English strings to Italian.
+\newpage
+\subsection{Not really}
+The actual output is:
+\begin{lstlisting}
+{hello,world}
+\end{lstlisting}
+\section{Frequently Asked Questions}
+\end{document}
+
