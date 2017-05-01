@@ -1,0 +1,9 @@
+set BSTAR = {":"};
+int I = 0;
+
+while (I < K) do
+	BSTAR = ({"b"} concat BSTAR) union {":"};
+	I = I + 1;
+end;
+
+display (({"a"} concat L1) union (L2 concat BSTAR)) K;

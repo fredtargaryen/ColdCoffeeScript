@@ -1,0 +1,1 @@
+display ({"a"} concat (L1 intersect L2)) K;
