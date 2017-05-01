@@ -2,6 +2,16 @@
 \contentsline {section}{\numberline {2}"Serious" Introduction}{2}
 \contentsline {section}{\numberline {3}Features}{2}
 \contentsline {section}{\numberline {4}Syntax}{2}
-\contentsline {subsection}{\numberline {4.1}Hello World}{2}
-\contentsline {subsection}{\numberline {4.2}Not really}{4}
-\contentsline {section}{\numberline {5}Frequently Asked Questions}{4}
+\contentsline {subsection}{\numberline {4.1}Ignored characters}{2}
+\contentsline {subsection}{\numberline {4.2}Program format}{2}
+\contentsline {subsection}{\numberline {4.3}Types}{2}
+\contentsline {subsection}{\numberline {4.4}Integer Operators}{2}
+\contentsline {subsection}{\numberline {4.5}Boolean Operators}{3}
+\contentsline {subsection}{\numberline {4.6}String Operators}{3}
+\contentsline {subsection}{\numberline {4.7}Set Operators}{3}
+\contentsline {subsection}{\numberline {4.8}Other Operators}{3}
+\contentsline {subsection}{\numberline {4.9}Variables}{3}
+\contentsline {section}{\numberline {5}Programming with ColdCoffeeScript}{3}
+\contentsline {subsection}{\numberline {5.1}Hello World}{3}
+\contentsline {subsection}{\numberline {5.2}Not really}{5}
+\contentsline {section}{\numberline {6}Frequently Asked Questions}{5}

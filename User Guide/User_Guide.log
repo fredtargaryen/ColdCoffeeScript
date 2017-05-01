@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.20)  27 APR 2017 21:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.20)  1 MAY 2017 20:25
 entering extended mode
 **"C:/Users/user/Desktop/ColdCoffeeScript/User Guide/User_Guide.tex"
 ("C:/Users/user/Desktop/ColdCoffeeScript/User Guide/User_Guide.tex"
@@ -331,60 +331,60 @@ fg"
 File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
- (User_Guide.aux)
+
+("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\preprint\fullpage.s
+ty"
+Package: fullpage 1999/02/23 1.1 (PWD)
+\FP@margin=\skip43
+) (User_Guide.aux)
 \openout1 = `User_Guide.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 13.
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 \c@lstlisting=\count95
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 12.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 14.
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 12.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 14.
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 12.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 14.
 
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 12.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 14.
 
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 14.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 14.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 12.
-
-Overfull \hbox (8.65175pt too wide) in paragraph at lines 13--14
-\T1/lmr/m/n/10 Guide are in no way af-fil-i-ated with or en-dorsed by pop-u-lar
- Uni-ver-sity of Southamp-
- []
+(Font)              <6> on input line 14.
 
 (User_Guide.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -398,43 +398,57 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \openout3 = `User_Guide.toc'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 24--25
+Underfull \hbox (badness 10000) in paragraph at lines 26--27
 
  []
 
 [1
 
 {C:/Users/user/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+lmr on input line 33.
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 35.
 
 ("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 33.
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 35.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 41.
 
-[2] [3] [4] (User_Guide.aux) ) 
+("C:\Users\user\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Underfull \hbox (badness 10000) in paragraph at lines 52--53
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 70--76
+
+ []
+
+[3] [4] [5] (User_Guide.aux) ) 
 Here is how much of TeX's memory you used:
- 2437 strings out of 493634
- 31483 string characters out of 3135647
- 80227 words of memory out of 3000000
- 5820 multiletter control sequences out of 15000+200000
- 51471 words of font info for 42 fonts, out of 3000000 for 9000
+ 2497 strings out of 493634
+ 32567 string characters out of 3135647
+ 84290 words of memory out of 3000000
+ 5872 multiletter control sequences out of 15000+200000
+ 51790 words of font info for 43 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 26i,6n,32p,458b,968s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 26i,6n,32p,612b,1046s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/
-fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX 2
-.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Users/user/AppData/Local/Programs/MiKTeX 2.
+fonts/enc/dvips/lm/lm-ec.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX 2.9/f
+onts/enc/dvips/lm/lm-mathsy.enc}<C:/Users/user/AppData/Local/Programs/MiKTeX 2.
 9/fonts/type1/public/lm/lmbx10.pfb><C:/Users/user/AppData/Local/Programs/MiKTeX
  2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Users/user/AppData/Local/Programs/MiK
 TeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Users/user/AppData/Local/Programs/M
 iKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users/user/AppData/Local/Programs
 /MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Users/user/AppData/Local/Progra
 ms/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/user/AppData/Local/Pro
-grams/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb>
-Output written on User_Guide.pdf (4 pages, 163930 bytes).
+grams/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/user/AppData/Local/
+Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb>
+Output written on User_Guide.pdf (5 pages, 202364 bytes).
 PDF statistics:
- 45 PDF objects out of 1000 (max. 8388607)
+ 52 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

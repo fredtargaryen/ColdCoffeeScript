@@ -4,10 +4,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{listings}
+\usepackage{fullpage}
 	
 \author{James Curran and Shahaan Hassan}
 \title{ColdCoffeeScript User Guide}
 
+\lstset{basicstyle=\ttfamily}
 \begin{document}
 \maketitle
 ColdCoffeeScript, its interpreter and accompanying features, and this User Guide are in no way affiliated with or endorsed by popular University of Southampton lecturer Gennaro Parlato.  
@@ -25,29 +27,63 @@ ColdCoffeeScript, its interpreter and accompanying features, and this User Guide
 \end{quote}
 
 \section{"Serious" Introduction}
-ColdCoffeeScript is a strongly and statically typed imperative domain-specific language, created for the purpose of manipulating regular languages. The language prides orthogonality over syntactic sugar so the developers have DELIBERATELY AIMED for a minimal syntax. All functions and operators are pass-by-value - variables are only changed when explicitly re-assigned by the programmer.
+ColdCoffeeScript is a strongly and statically typed imperative domain-specific language, created for the purpose of manipulating regular languages. The language prides orthogonality over syntactic sugar so the developers have DELIBERATELY AIMED for a minimal syntax. All functions and operators can be treated as pass-by-value. Variables are only changed when explicitly re-assigned by the programmer. Four data types are supported: integer, boolean, string and set (of strings). For details on supported operations, see the "Syntax" section.
 
 \section{Features}
 ColdCoffeeScript boasts many organic features, guaranteed to make programming simply delightful. These include:
 \begin{itemize}
 \item Delicious Gennaro-themed error messages, including such choice phrases as "" and "" (we only ever type valid programs so we don't know)
 \item Incredible type checker to whip those unruly variables into shape before they go into the program!
-\item Single line comments - include any old muck in your program by surrounding part of your line with hashes, like so \#Shahaan remember to add more features here\#
+\item Single line comments - include any old muck in your program by surrounding part of a line with hashes, like so \#Shahaan remember to add more features under here\#
 \end{itemize}
 \section{Syntax}
-So, essentially, the idea ees-a, I will give-a you a taybul of the syntax and what eet-a does. Then you can mess around with it for homework.
-
-Nota Bene: Variable names are in capitals only. Thees-a was done deliberately to distinguish variables from functions, and emphasise the importance of good variable naming.
+\subsection{Ignored characters}
+Any characters surrounded by \lstinline|#| symbols are treated as comments and ignored by the interpreter. Outside of these symbols, only whitespace and the newline character are ignored.
+\subsection{Program format}
+A ColdCoffeeScript program is a series of statements (see "Statements" below), separated by a semicolon. Line comments can appear on any line of the program.
+\subsection{Types}
+\begin{itemize}
+\item ColdCoffeeScript integers (named \lstinline|int| in code) are specified by any sequence of the characters 0-9. Nota Bene: Integers are bounded by the OCaml integer standard - see caml.inria.fr for more information. We certainly did.
+\item Booleans (\lstinline|bool| in code) are standard boolean types, denoted by \lstinline|true| and \lstinline|false|.
+\item Strings (\lstinline|string| in code) are sequences of characters from the lowercase English alphabet. The exception is \lstinline|:|, which represents an empty string. Strings are encased in double quotes in the program, but not in program input or output.
+\item Sets (\lstinline|set| in code) are ordered collections of strings. A set cannot contain two identical strings, and the set is reordered automatically if necessary. Strings in sets follow alphabetical order, BUT strings with shorter lengths are closer to the start of the set, with : being closest of all.
+\end{itemize}
+\subsection{Integer Operators}
+All integer operators are infix. The standard \lstinline|+|, \lstinline|-|, \lstinline|*| and \lstinline|/| are used, as well as \lstinline|<|, \lstinline|==| and \lstinline|>| for comparison. If two integers do not divide evenly, an error will occur.\\
+\subsection{Boolean Operators}
+All boolean operators are infix. The operators are the standard \lstinline|not|, \lstinline|and| and \lstinline|or|, with \lstinline|==| to check for equality.
+\subsection{String Operators}
+All string operators are infix. \lstinline|+| is used to concatenate strings. \lstinline|==| is used to check for equality.
+\subsection{Set Operators}
+ColdCoffeeScript provides \lstinline|union|, \lstinline|intersect| and \lstinline|concat| for sets. Also, \lstinline|<set A> difference <set B>| is used to remove all values in set B from set A.
+\subsection{Other Operators}
+\lstinline|<string A> memberOf <set B>| is a boolean operator that checks if A is a member of B.\\
+\lstinline|display <set A> <integer B>;| will output the first B elements of A.
+\subsection{Variables}
+A variable is created by stating its type, then name, followed by an equals sign, followed by the desired value. This is a statement so a semicolon is also needed.
+\begin{itemize}
+\item \lstinline|int MYNUMBER = 41;|
+\item \lstinline|bool MYBOOL = true;|
+\item \lstinline|string MYSTRING = "yawn";|
+\item \lstinline|set MYSET = {"are", "you", "bored", "yet"};|
+\end{itemize}
+The variable's value is reassigned with the name, followed by an equals sign, followed by the new value, followed by a semicolon: \\
+\lstinline|MYSET = {"god", "yes","someone","help","me","please"};| \\
+It is of course also possible to (re-)assign the result of some expression to a variable, provided the result is of the type the variable was declared with: \\
+\lstinline|MYSET = {"this", "joke", "has", "run"} union {"its", "co"+"urse"};| \\
+Nota Bene: variable names can only consist of capital letters. This was DONE BY CHOICE to emphasise the importance of good variable naming. \\\\
+ColdCoffeeScript also offers conditionals and iteration as while and if/else constructs. See "Programming with ColdCoffeeScript" for usage information.
+\section{Programming with ColdCoffeeScript}
 \subsection{Hello World}
 Thees ees-a the anatomy of a Hello World Program in ColdCoffeeScript.
 \begin{lstlisting}
 display {"hello","world"} 2;
 \end{lstlisting}
-On line 1, 'display' ees-a the function used to output a set to standard output. The output can-a probably be redirected as-a well.
+On line 1, \lstinline|display| ees-a the function used to output a set to standard output. The output can-a probably be redirected as-a well.
 
-On line 1, '\{"hello","world"\}' ees an exampul of what ees known in ColdCoffeeScript as a set literal. The parentheses show the start and end of the set, and the set contains the two strings "hello" and "world", separated by a comma.
+On line 1, \lstinline|{"hello","world"}| ees an exampul of what ees known in ColdCoffeeScript as a set literal. The parentheses show the start and end of the set, and the set contains the two strings "hello" and "world", separated by a comma.
 
-On line 1, '2' ees the number of elements of the set that will be printed. Thees ees-a useful for-a very large sets where you don't care about all of the output.
+On line 1, \lstinline|2| ees the number of elements of the set that will be printed. Thees ees-a useful for-a very large sets where you don't care about all of the output.
 
 The semicolon ends the display statement. If you do not end each statement weeth a semicolon, your statement will be just a concept and your DFA will-a fail.
 
