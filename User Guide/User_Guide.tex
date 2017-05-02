@@ -71,8 +71,35 @@ The variable's value is reassigned with the name, followed by an equals sign, fo
 \lstinline|MYSET = {"god", "yes","someone","help","me","please"};| \\
 It is of course also possible to (re-)assign the result of some expression to a variable, provided the result is of the type the variable was declared with: \\
 \lstinline|MYSET = {"this", "joke", "has", "run"} union {"its", "co"+"urse"};| \\
-Nota Bene: variable names can only consist of capital letters. This was DONE BY CHOICE to emphasise the importance of good variable naming. \\\\
-ColdCoffeeScript also offers conditionals and iteration as while and if/else constructs. See "Programming with ColdCoffeeScript" for usage information.
+Nota Bene: variable names can only consist of capital letters. This was DONE BY CHOICE to emphasise the importance of good variable naming.
+\subsection{Using Input}
+Input follows a strict structure where each line must be a set of strings, except for the last line which must be a number. For example:
+\begin{lstlisting}
+{a, b, c,       d}
+{:}
+{words}
+4
+\end{lstlisting}
+Input is then accessed through pre-assigned variables at the start of the program. \lstinline|L1| is the language (set of strings) on line 1 of input, \lstinline|L2| on line 2 and so on. \lstinline|K| is the number at the end. These variables can be reassigned in code e.g. for security purposes, but their original values cannot be retrieved unless they were saved elsewhere.
+\subsection{Conditionals and Iteration}
+This is a very brief overview of the if(-else) and while constructs in ColdCoffeeScript. See "Programming with ColdCoffeeScript" for more examples.
+\begin{lstlisting}
+if <bool> do
+    <body>
+end
+
+if <bool> do
+    <body1>
+else
+    <body2>
+end
+
+while <bool> do
+    <body>
+end
+\end{lstlisting}
+\lstinline|<bool>| is an expression that evaluates to a boolean. \lstinline|<body>|, \lstinline|<body1>| and \lstinline|<body2>| are series of statements, just like the overall program. \\
+Indentation is not necessary; ColdCoffeeScript code can take any shape desired by the programmer. To encourage this, code which uses whitespace to be shaped like a steaming cup of Italian coffee is permitted by the interpreter to run 50\% faster.
 \section{Programming with ColdCoffeeScript}
 \subsection{Hello World}
 Thees ees-a the anatomy of a Hello World Program in ColdCoffeeScript.
@@ -93,11 +120,23 @@ The output of the program is as follows:
 \end{lstlisting}
 This is because the language automatically translates English strings to Italian.
 \newpage
-\subsection{Not really}
+\subsection{Not Really}
 The actual output is:
 \begin{lstlisting}
 {hello,world}
 \end{lstlisting}
-\section{Frequently Asked Questions}
+\subsection{FizzBuzz}
+The best FizzBuzz algorithms in other languages have \(\Omega (n)\) complexity; however, thanks to the properties of languages, the complexity in ColdCoffeeScript can be greatly reduced. Firstly, numbers are not permitted in languages so there is no need to write code to add integers to languages. Secondly, multiple instances of "Fizz", "Buzz" or "FizzBuzz" will be reduced to a single instance of each in the final set. We now therefore present an \(O(1)\) ColdCoffeeScript FizzBuzz program, which will produce the same output as any other FizzBuzz program in ColdCoffeeScript:
+\begin{lstlisting}
+if K > 14 do
+    display {"buzz", "fizz", "fizzbuzz"} 3;
+else if K > 4 do
+    display {"buzz", "fizz"} 2;
+else if K > 2 do
+    display {"buzz"} 1;
+else
+    display {} 1;
+end
+\end{lstlisting}
 \end{document}
 
