@@ -1,11 +1,11 @@
-\contentsline {section}{\numberline {1}Introductory Quotes and Haiku}{1}
+\contentsline {section}{\numberline {1}Introductory Haiku}{1}
 \contentsline {section}{\numberline {2}"Serious" Introduction}{2}
 \contentsline {section}{\numberline {3}Features}{2}
 \contentsline {section}{\numberline {4}Syntax}{2}
 \contentsline {subsection}{\numberline {4.1}Ignored characters}{2}
 \contentsline {subsection}{\numberline {4.2}Program format}{2}
 \contentsline {subsection}{\numberline {4.3}Types}{2}
-\contentsline {subsection}{\numberline {4.4}Integer Operators}{2}
+\contentsline {subsection}{\numberline {4.4}Arithmetic Operators}{2}
 \contentsline {subsection}{\numberline {4.5}Boolean Operators}{3}
 \contentsline {subsection}{\numberline {4.6}String Operators}{3}
 \contentsline {subsection}{\numberline {4.7}Set Operators}{3}
@@ -17,3 +17,4 @@
 \contentsline {subsection}{\numberline {5.1}Hello World}{4}
 \contentsline {subsection}{\numberline {5.2}Not Really}{5}
 \contentsline {subsection}{\numberline {5.3}FizzBuzz}{5}
+\contentsline {subsection}{\numberline {5.4}Kleene Star}{5}

@@ -13,28 +13,23 @@
 \begin{document}
 \maketitle
 ColdCoffeeScript, its interpreter and accompanying features, and this User Guide are in no way affiliated with or endorsed by popular University of Southampton lecturer Gennaro Parlato.  
-\tableofcontents % for a table of contents
+%\tableofcontents % for a table of contents
 
-\section{Introductory Quotes and Haiku}
-\begin{quote}
-\textit{"You can't put that lmao"}
-\end{quote}
-
- - Shahaan Hassan, 2017
+\section{Introductory Haiku}
 
 \begin{quote}
-\textit{We have distilled the\\One and only Gennaro\\Into a language\\\\If you want some proof\\that our language is dank, well\\we got 4/20}
+\textit{We have distilled the\\One and only Gennaro\\Into a language}
 \end{quote}
 
 \section{"Serious" Introduction}
 ColdCoffeeScript is a strongly and statically typed imperative domain-specific language, created for the purpose of manipulating regular languages. The language prides orthogonality over syntactic sugar so the developers have DELIBERATELY AIMED for a minimal syntax. All functions and operators can be treated as pass-by-value. Variables are only changed when explicitly re-assigned by the programmer. Four data types are supported: integer, boolean, string and set (of strings). For details on supported operations, see the "Syntax" section.
 
 \section{Features}
-ColdCoffeeScript boasts many organic features, guaranteed to make programming simply delightful. These include:
+ColdCoffeeScript boasts many features, guaranteed to make programming simply delightful. These include:
 \begin{itemize}
-\item Delicious Gennaro-themed error messages, including such choice phrases as "" and "" (we only ever type valid programs so we don't know)
-\item Incredible type checker to whip those unruly variables into shape before they go into the program!
-\item Single line comments - include any old muck in your program by surrounding part of a line with hashes, like so \#Shahaan remember to add more features under here\#
+\item Informative error messages: Delicious Gennaro-themed dialogue, for lexing, input, type and runtime errors
+\item Type checking: Rigorous type checker to whip those unruly variables into shape before they go into the program!
+\item Programmer convenience: Single line comments - include supplementary literature in your program by surrounding part of a line with hashes, like so \#Shahaan remember to add more features under here\#
 \end{itemize}
 \section{Syntax}
 \subsection{Ignored characters}
@@ -46,10 +41,10 @@ A ColdCoffeeScript program is a series of statements (see "Statements" below), s
 \item ColdCoffeeScript integers (named \lstinline|int| in code) are specified by any sequence of the characters 0-9. Nota Bene: Integers are bounded by the OCaml integer standard - see caml.inria.fr for more information. We certainly did.
 \item Booleans (\lstinline|bool| in code) are standard boolean types, denoted by \lstinline|true| and \lstinline|false|.
 \item Strings (\lstinline|string| in code) are sequences of characters from the lowercase English alphabet. The exception is \lstinline|:|, which represents an empty string. Strings are encased in double quotes in the program, but not in program input or output.
-\item Sets (\lstinline|set| in code) are ordered collections of strings. A set cannot contain two identical strings, and the set is reordered automatically if necessary. Strings in sets follow alphabetical order, BUT strings with shorter lengths are closer to the start of the set, with : being closest of all.
+\item Sets (\lstinline|set| in code) are ordered collections of strings. A set cannot contain two identical strings, and the set is reordered automatically if necessary. Strings in sets follow alphabetical order, and if : is in the set it will be at the start.
 \end{itemize}
-\subsection{Integer Operators}
-All integer operators are infix. The standard \lstinline|+|, \lstinline|-|, \lstinline|*| and \lstinline|/| are used, as well as \lstinline|<|, \lstinline|==| and \lstinline|>| for comparison. If two integers do not divide evenly, an error will occur.\\
+\subsection{Arithmetic Operators}
+All arithmetic operators are infix and only involve integers. The standard \lstinline|+|, \lstinline|-|, \lstinline|*| and \lstinline|/| are used, as well as \lstinline|<|, \lstinline|==| and \lstinline|>| for comparison. If two integers do not divide evenly, an error will occur.\\
 \subsection{Boolean Operators}
 All boolean operators are infix. The operators are the standard \lstinline|not|, \lstinline|and| and \lstinline|or|, with \lstinline|==| to check for equality.
 \subsection{String Operators}
@@ -80,7 +75,7 @@ Input follows a strict structure where each line must be a set of strings, excep
 {words}
 4
 \end{lstlisting}
-Input is then accessed through pre-assigned variables at the start of the program. \lstinline|L1| is the language (set of strings) on line 1 of input, \lstinline|L2| on line 2 and so on. \lstinline|K| is the number at the end. These variables can be reassigned in code e.g. for security purposes, but their original values cannot be retrieved unless they were saved elsewhere.
+Input is then accessed through pre-assigned variables at the start of the program. \lstinline|L1| is the language (set of strings) on line 1 of input, \lstinline|L2| on line 2 and so on. \lstinline|K| is the number at the end. These variables can be reassigned in code, but their original values cannot be retrieved unless they were saved elsewhere.
 \subsection{Conditionals and Iteration}
 This is a very brief overview of the if(-else) and while constructs in ColdCoffeeScript. See "Programming with ColdCoffeeScript" for more examples.
 \begin{lstlisting}
@@ -98,21 +93,21 @@ while <bool> do
     <body>
 end;
 \end{lstlisting}
-\lstinline|<bool>| is an expression that evaluates to a boolean. \lstinline|<body>|, \lstinline|<body1>| and \lstinline|<body2>| are series of statements, just like the overall program. \\
-Indentation is not necessary; ColdCoffeeScript code can take any shape desired by the programmer. To encourage this, code which uses whitespace to be shaped like a steaming cup of Italian coffee is permitted by the interpreter to run 50\% faster.
-\section{Programming with ColdCoffeeScript}
+\lstinline|<bool>| is an expression that evaluates to a boolean. \lstinline|<body>|, \lstinline|<body1>| and \lstinline|<body2>| are series of statements, just like the overall program. For an example of conditionals, refer to the FizzBuzz program in the Appendix. For an example of iteration, refer to the Kleene Star program.\\
+Indentation is not necessary; ColdCoffeeScript code can take any shape desired by the programmer. To encourage this, code which uses whitespace to be shaped like a steaming cup of Italian coffee is permitted by the interpreter to run 50\% faster.\footnote{Completely untrue}
+\section{Appendix: Example Programs}
 \subsection{Hello World}
-Thees ees-a the anatomy of a Hello World Program in ColdCoffeeScript.
+This is the anatomy of a Hello World Program in ColdCoffeeScript.
 \begin{lstlisting}
 display {"hello","world"} 2;
 \end{lstlisting}
-On line 1, \lstinline|display| ees-a the function used to output a set to standard output. The output can-a probably be redirected as-a well.
+On line 1, \lstinline|display| is the function used to output a set to standard output. The output can probably be redirected as well.
 
-On line 1, \lstinline|{"hello","world"}| ees an exampul of what ees known in ColdCoffeeScript as a set literal. The parentheses show the start and end of the set, and the set contains the two strings "hello" and "world", separated by a comma.
+On line 1, \lstinline|{"hello","world"}| is an example of what is known in ColdCoffeeScript as a set literal. The parentheses show the start and end of the set, and the set contains the two strings "hello" and "world", separated by a comma.
 
-On line 1, \lstinline|2| ees the number of elements of the set that will be printed. Thees ees-a useful for-a very large sets where you don't care about all of the output.
+On line 1, \lstinline|2| is the number of elements of the set that will be printed. This is useful for very large sets where you don't care about all of the output.
 
-The semicolon ends the display statement. If you do not end each statement weeth a semicolon, your statement will be just a concept and your DFA will-a fail.
+The semicolon ends the display statement. If you do not end each statement with a semicolon, your statement will be just a concept.
 
 The output of the program is as follows:
 \begin{lstlisting}
