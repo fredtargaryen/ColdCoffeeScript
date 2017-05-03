@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.20)  2 MAY 2017 18:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.2.20)  3 MAY 2017 19:13
 entering extended mode
 **"C:/Users/user/Desktop/ColdCoffeeScript/User Guide/User_Guide.tex"
 ("C:/Users/user/Desktop/ColdCoffeeScript/User Guide/User_Guide.tex"
@@ -400,51 +400,50 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 [1
 
 {C:/Users/user/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 47--48
-
- []
-
-
 Overfull \hbox (61.80862pt too wide) in paragraph at lines 53--54
 \T1/lmr/m/n/10 The set op-er-a-tors are in-fix. Cold-Cof-fee-Script pro-vides [
 ], [] and []. Also, [][][][][][][][][][][][][]
  []
 
 [2]
+Underfull \hbox (badness 10000) in paragraph at lines 78--80
+
+ []
+
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 97.
+(Font)              <10> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 97.
+(Font)              <7> on input line 98.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 97.
- [3] [4] [5] (User_Guide.aux) ) 
+(Font)              <5> on input line 98.
+[3] [4] [5] [6] (User_Guide.aux) ) 
 Here is how much of TeX's memory you used:
  2498 strings out of 493634
  32569 string characters out of 3135647
- 87290 words of memory out of 3000000
+ 88290 words of memory out of 3000000
  5874 multiletter control sequences out of 15000+200000
  57767 words of font info for 45 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
  26i,8n,32p,665b,1046s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/user/AppData/Local/Programs/MiKTeX 2.9
-/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX 
-2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX 2
-.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX 2.
-9/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Users/user/AppData/Local/Programs/MiKTeX
- 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Users/user/AppData/Local/Programs/MiK
-TeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Users/user/AppData/Local/Programs/
-MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Users/user/AppData/Local/Program
-s/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users/user/AppData/Local/Progr
-ams/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Users/user/AppData/Local/Pro
-grams/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Users/user/AppData/Local/Pr
-ograms/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Users/user/AppData/Local/P
-rograms/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Users/user/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/user/AppData/Loc
-al/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/user/AppData/
-Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb>
-Output written on User_Guide.pdf (5 pages, 236328 bytes).
+{C:/Users/user/AppData/Local/Programs/MiKTeX 
+2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/user/AppData/Local/Programs/MiKT
+eX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Users/user/AppData/Local/Programs/MiKTe
+X 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Users/user/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Users/user/AppData/Local/Programs/MiK
+TeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Users/user/AppData/Local/Programs/
+MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Users/user/AppData/Local/Progra
+ms/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Users/user/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users/user/AppData/Local/Pr
+ograms/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Users/user/AppData/Local/
+Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Users/user/AppData/Local
+/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/Users/user/AppData/Loca
+l/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Users/user/AppData/Loc
+al/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Users/user/AppData/
+Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Users/user/AppDa
+ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb>
+Output written on User_Guide.pdf (6 pages, 237981 bytes).
 PDF statistics:
- 68 PDF objects out of 1000 (max. 8388607)
+ 71 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
