@@ -1,4 +1,4 @@
-set BSTAR = {":"};
+set BSTAR = {};
 int I = 0;
 
 while (I < K) do
